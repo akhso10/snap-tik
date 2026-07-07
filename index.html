@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikSaver Pro - TikTok Downloader Premium</title>
+    <title>SocialSaver Pro - TikTok & Instagram Downloader</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff0050;
+            --tiktok: #ff0050;
+            --tiktok-cyan: #00f2ea;
+            --ig-purple: #833ab4;
+            --ig-pink: #fd1d1d;
+            --ig-orange: #fcb045;
+            --primary: var(--tiktok);
             --primary-light: #ff2d78;
             --primary-dark: #cc0040;
-            --secondary: #00f2ea;
-            --secondary-light: #33f5ee;
+            --secondary: var(--tiktok-cyan);
             --accent: #7c3aed;
             --accent-light: #a78bfa;
             --success: #10b981;
@@ -63,15 +67,8 @@
             --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.12);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -86,45 +83,25 @@
         /* ====== ANIMATED BACKGROUND ====== */
         .bg-animation {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: -1;
             overflow: hidden;
         }
 
         .bg-gradient {
             position: absolute;
-            width: 600px;
-            height: 600px;
+            width: 600px; height: 600px;
             border-radius: 50%;
             filter: blur(120px);
             opacity: 0.15;
             animation: floatBg 20s infinite ease-in-out;
+            transition: background 1s ease;
         }
 
-        .bg-gradient:nth-child(1) {
-            background: var(--primary);
-            top: -200px;
-            left: -200px;
-            animation-delay: 0s;
-        }
-
-        .bg-gradient:nth-child(2) {
-            background: var(--secondary);
-            bottom: -200px;
-            right: -200px;
-            animation-delay: -7s;
-        }
-
-        .bg-gradient:nth-child(3) {
-            background: var(--accent);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -14s;
-        }
+        .bg-gradient:nth-child(1) { background: var(--primary); top: -200px; left: -200px; animation-delay: 0s; }
+        .bg-gradient:nth-child(2) { background: var(--secondary); bottom: -200px; right: -200px; animation-delay: -7s; }
+        .bg-gradient:nth-child(3) { background: var(--accent); top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: -14s; }
 
         @keyframes floatBg {
             0%, 100% { transform: translate(0, 0) scale(1); }
@@ -135,10 +112,8 @@
 
         .grid-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background-image: 
                 linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
@@ -149,28 +124,23 @@
         /* ====== PRELOADER ====== */
         #preloader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: var(--bg-primary);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 99999;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
 
-        #preloader.hide {
-            opacity: 0;
-            visibility: hidden;
-        }
+        #preloader.hide { opacity: 0; visibility: hidden; }
 
         .preloader-logo {
             font-size: 3rem;
             margin-bottom: 30px;
-            animation: preloaderPulse 1.5s infinite;
+            animation: preloaderPulse 1.2s infinite;
         }
 
         .preloader-logo i {
@@ -181,8 +151,7 @@
         }
 
         .preloader-bar {
-            width: 200px;
-            height: 3px;
+            width: 200px; height: 3px;
             background: var(--border-glass);
             border-radius: 3px;
             overflow: hidden;
@@ -191,11 +160,10 @@
         .preloader-bar::after {
             content: '';
             display: block;
-            width: 40%;
-            height: 100%;
+            width: 40%; height: 100%;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             border-radius: 3px;
-            animation: preloaderSlide 1.2s infinite ease-in-out;
+            animation: preloaderSlide 1s infinite ease-in-out;
         }
 
         @keyframes preloaderPulse {
@@ -211,9 +179,7 @@
         /* ====== NAVBAR ====== */
         .navbar {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             z-index: 1000;
             padding: 15px 30px;
             background: rgba(10, 10, 15, 0.8);
@@ -225,9 +191,7 @@
             transition: var(--transition);
         }
 
-        [data-theme="light"] .navbar {
-            background: rgba(255, 255, 255, 0.85);
-        }
+        [data-theme="light"] .navbar { background: rgba(255, 255, 255, 0.85); }
 
         .navbar-brand {
             display: flex;
@@ -240,8 +204,7 @@
         }
 
         .navbar-brand .brand-icon {
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-radius: var(--radius-sm);
             display: flex;
@@ -249,6 +212,7 @@
             justify-content: center;
             color: white;
             font-size: 1rem;
+            transition: var(--transition);
         }
 
         .navbar-actions {
@@ -257,9 +221,32 @@
             gap: 12px;
         }
 
+        .stats-badge {
+            padding: 6px 14px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stats-badge .dot {
+            width: 6px; height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
         .nav-btn {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             border-radius: var(--radius-full);
             border: 1px solid var(--border-glass);
             background: var(--bg-glass);
@@ -279,37 +266,6 @@
             transform: scale(1.05);
         }
 
-        .nav-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-color: transparent;
-            color: white;
-        }
-
-        .stats-badge {
-            padding: 6px 14px;
-            background: var(--bg-glass);
-            border: 1px solid var(--border-glass);
-            border-radius: var(--radius-full);
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .stats-badge .dot {
-            width: 6px;
-            height: 6px;
-            background: var(--success);
-            border-radius: 50%;
-            animation: blink 2s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
         /* ====== MAIN CONTAINER ====== */
         .main-container {
             max-width: 900px;
@@ -319,30 +275,18 @@
         }
 
         /* ====== PAGES ====== */
-        .page {
-            display: none;
-            animation: pageIn 0.5s ease-out;
-        }
-
-        .page.active {
-            display: block;
-        }
+        .page { display: none; animation: pageIn 0.4s ease-out; }
+        .page.active { display: block; }
 
         @keyframes pageIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ====== HERO SECTION ====== */
         .hero {
             text-align: center;
-            padding: 60px 0 40px;
+            padding: 40px 0 20px;
         }
 
         .hero-badge {
@@ -356,19 +300,17 @@
             font-size: 0.8rem;
             color: var(--text-secondary);
             margin-bottom: 24px;
-            animation: fadeInDown 0.6s ease-out;
+            animation: fadeInDown 0.5s ease-out;
         }
 
-        .hero-badge i {
-            color: var(--secondary);
-        }
+        .hero-badge i { color: var(--secondary); }
 
         .hero h1 {
-            font-size: clamp(2.2rem, 6vw, 3.5rem);
+            font-size: clamp(2rem, 5vw, 3rem);
             font-weight: 900;
             line-height: 1.1;
             margin-bottom: 16px;
-            animation: fadeInDown 0.6s ease-out 0.1s both;
+            animation: fadeInDown 0.5s ease-out 0.1s both;
         }
 
         .hero h1 .gradient-text {
@@ -380,22 +322,101 @@
             animation: gradientShift 3s ease infinite;
         }
 
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% center; }
-            50% { background-position: 100% center; }
-        }
-
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--text-secondary);
             max-width: 500px;
             margin: 0 auto;
-            animation: fadeInDown 0.6s ease-out 0.2s both;
+            animation: fadeInDown 0.5s ease-out 0.2s both;
         }
 
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-15px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+        }
+
+        /* ====== PLATFORM TABS ====== */
+        .platform-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 24px auto 0;
+            padding: 6px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-full);
+            max-width: 420px;
+            animation: slideUp 0.5s ease-out 0.25s both;
+        }
+
+        .tab-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-btn .tab-icon {
+            width: 28px; height: 28px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .tab-btn[data-platform="tiktok"] .tab-icon {
+            background: rgba(255, 0, 80, 0.1);
+            color: var(--tiktok);
+        }
+
+        .tab-btn[data-platform="instagram"] .tab-icon {
+            background: linear-gradient(135deg, rgba(131, 58, 180, 0.1), rgba(253, 29, 29, 0.1), rgba(252, 176, 69, 0.1));
+            color: var(--ig-pink);
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-glass-hover);
+        }
+
+        .tab-btn.active {
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            box-shadow: 0 4px 15px rgba(255, 0, 80, 0.3);
+        }
+
+        .tab-btn.active[data-platform="instagram"] {
+            background: linear-gradient(135deg, var(--ig-purple), var(--ig-pink), var(--ig-orange));
+            box-shadow: 0 4px 15px rgba(253, 29, 29, 0.3);
+        }
+
+        /* ====== PLATFORM CONTENT ====== */
+        .platform-content { display: none; animation: fadeIn 0.4s ease; }
+        .platform-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* ====== INPUT CARD ====== */
@@ -405,7 +426,7 @@
             border: 1px solid var(--border-glass);
             border-radius: var(--radius-xl);
             padding: 32px;
-            margin: 30px 0;
+            margin: 24px 0;
             box-shadow: var(--shadow-md);
             position: relative;
             overflow: hidden;
@@ -415,16 +436,17 @@
         .input-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 2px;
             background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
         }
 
+        .input-card.instagram::before {
+            background: linear-gradient(90deg, var(--ig-purple), var(--ig-pink), var(--ig-orange));
+        }
+
         .input-wrapper {
             display: flex;
-            gap: 0;
             position: relative;
             background: var(--bg-glass);
             border: 2px solid var(--border-glass);
@@ -436,6 +458,11 @@
         .input-wrapper:focus-within {
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(255, 0, 80, 0.1);
+        }
+
+        .input-card.instagram .input-wrapper:focus-within {
+            border-color: var(--ig-pink);
+            box-shadow: 0 0 0 4px rgba(253, 29, 29, 0.1);
         }
 
         .input-wrapper .input-icon {
@@ -457,9 +484,7 @@
             outline: none;
         }
 
-        .url-input::placeholder {
-            color: var(--text-muted);
-        }
+        .url-input::placeholder { color: var(--text-muted); }
 
         .input-actions {
             display: flex;
@@ -469,8 +494,7 @@
         }
 
         .input-action-btn {
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             border-radius: var(--radius-sm);
             border: none;
             background: transparent;
@@ -509,29 +533,31 @@
             font-family: 'Inter', sans-serif;
         }
 
+        .input-card.instagram .process-btn {
+            background: linear-gradient(135deg, var(--ig-purple), var(--ig-pink), var(--ig-orange));
+        }
+
         .process-btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transition: left 0.5s;
         }
 
-        .process-btn:hover::before {
-            left: 100%;
-        }
+        .process-btn:hover::before { left: 100%; }
 
         .process-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(255, 0, 80, 0.3);
         }
 
-        .process-btn:active {
-            transform: translateY(0);
+        .input-card.instagram .process-btn:hover {
+            box-shadow: 0 8px 25px rgba(253, 29, 29, 0.3);
         }
+
+        .process-btn:active { transform: translateY(0); }
 
         .process-btn:disabled {
             opacity: 0.6;
@@ -540,21 +566,11 @@
             box-shadow: none;
         }
 
-        .process-btn:disabled::before {
-            display: none;
-        }
+        .process-btn:disabled::before { display: none; }
 
         /* ====== LOADING STATE ====== */
-        .loading-state {
-            display: none;
-            text-align: center;
-            padding: 30px 0;
-        }
-
-        .loading-state.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
+        .loading-state { display: none; text-align: center; padding: 30px 0; }
+        .loading-state.active { display: block; animation: fadeIn 0.3s ease; }
 
         .loading-dots {
             display: flex;
@@ -564,11 +580,14 @@
         }
 
         .loading-dots span {
-            width: 12px;
-            height: 12px;
+            width: 12px; height: 12px;
             border-radius: 50%;
             background: var(--primary);
             animation: dotBounce 1.4s infinite ease-in-out both;
+        }
+
+        .input-card.instagram .loading-dots span {
+            background: var(--ig-pink);
         }
 
         .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
@@ -580,14 +599,10 @@
             40% { transform: scale(1); opacity: 1; }
         }
 
-        .loading-text {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
+        .loading-text { color: var(--text-secondary); font-size: 0.9rem; }
 
         .loading-progress {
-            width: 100%;
-            max-width: 300px;
+            width: 100%; max-width: 300px;
             height: 4px;
             background: var(--border-glass);
             border-radius: 4px;
@@ -601,6 +616,10 @@
             border-radius: 4px;
             width: 0%;
             transition: width 0.3s ease;
+        }
+
+        .input-card.instagram .loading-progress-bar {
+            background: linear-gradient(90deg, var(--ig-purple), var(--ig-pink), var(--ig-orange));
         }
 
         /* ====== ERROR STATE ====== */
@@ -617,10 +636,7 @@
             gap: 12px;
         }
 
-        .error-state.active {
-            display: flex;
-            animation: shakeError 0.5s ease;
-        }
+        .error-state.active { display: flex; animation: shakeError 0.5s ease; }
 
         @keyframes shakeError {
             0%, 100% { transform: translateX(0); }
@@ -640,18 +656,21 @@
             margin: 20px 0;
             overflow: hidden;
             box-shadow: var(--shadow-lg);
-            animation: resultIn 0.6s ease-out;
+            animation: resultIn 0.5s ease-out;
+            position: relative;
+        }
+
+        .result-card.instagram-result::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--ig-purple), var(--ig-pink), var(--ig-orange));
         }
 
         @keyframes resultIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95) translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .result-header {
@@ -663,8 +682,7 @@
         }
 
         .result-header .check-icon {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             background: rgba(16, 185, 129, 0.1);
             border: 2px solid var(--success);
             border-radius: var(--radius-full);
@@ -681,19 +699,10 @@
             to { transform: scale(1); }
         }
 
-        .result-header-text h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
+        .result-header-text h3 { font-size: 1.1rem; font-weight: 700; }
+        .result-header-text p { font-size: 0.8rem; color: var(--text-muted); }
 
-        .result-header-text p {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .result-body {
-            padding: 32px;
-        }
+        .result-body { padding: 32px; }
 
         .video-preview-container {
             display: flex;
@@ -703,8 +712,7 @@
         }
 
         .video-thumbnail {
-            width: 180px;
-            min-width: 180px;
+            width: 180px; min-width: 180px;
             height: 240px;
             border-radius: var(--radius-md);
             overflow: hidden;
@@ -713,17 +721,14 @@
         }
 
         .video-thumbnail img {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
         }
 
         .video-thumbnail .play-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
@@ -733,18 +738,10 @@
             cursor: pointer;
         }
 
-        .video-thumbnail:hover .play-overlay {
-            opacity: 1;
-        }
+        .video-thumbnail:hover .play-overlay { opacity: 1; }
+        .play-overlay i { font-size: 2.5rem; color: white; }
 
-        .play-overlay i {
-            font-size: 2.5rem;
-            color: white;
-        }
-
-        .video-details {
-            flex: 1;
-        }
+        .video-details { flex: 1; }
 
         .video-details h4 {
             font-size: 1rem;
@@ -774,14 +771,63 @@
             border-radius: var(--radius-full);
         }
 
-        .meta-item i {
-            font-size: 0.7rem;
+        .meta-item i { font-size: 0.7rem; }
+
+        /* ====== CAROUSEL GRID (for IG posts with multiple images) ====== */
+        .carousel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
         }
 
-        /* ====== DOWNLOAD OPTIONS ====== */
-        .download-section {
-            margin-top: 24px;
+        .carousel-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
         }
+
+        .carousel-item:hover {
+            border-color: var(--primary);
+            transform: scale(1.03);
+        }
+
+        .carousel-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-item .carousel-badge {
+            position: absolute;
+            top: 8px; left: 8px;
+            padding: 4px 8px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 0.7rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+
+        .carousel-item .carousel-dl {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 8px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            font-size: 0.75rem;
+            text-align: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .carousel-item:hover .carousel-dl { opacity: 1; }
+
+        /* ====== DOWNLOAD OPTIONS ====== */
+        .download-section { margin-top: 24px; }
 
         .download-section-title {
             font-size: 0.85rem;
@@ -790,6 +836,9 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .download-grid {
@@ -829,8 +878,7 @@
         .download-item.featured::after {
             content: 'HD';
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: 8px; right: 8px;
             padding: 2px 8px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
@@ -839,9 +887,18 @@
             border-radius: var(--radius-full);
         }
 
+        .download-item.featured.ig-featured {
+            border-color: var(--ig-pink);
+            background: rgba(253, 29, 29, 0.05);
+        }
+
+        .download-item.featured.ig-featured::after {
+            background: linear-gradient(135deg, var(--ig-purple), var(--ig-pink), var(--ig-orange));
+            content: 'HD';
+        }
+
         .download-item-icon {
-            width: 44px;
-            height: 44px;
+            width: 44px; height: 44px;
             border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
@@ -850,38 +907,17 @@
             flex-shrink: 0;
         }
 
-        .download-item-icon.video {
-            background: rgba(255, 0, 80, 0.1);
-            color: var(--primary);
-        }
+        .download-item-icon.video { background: rgba(255, 0, 80, 0.1); color: var(--primary); }
+        .download-item-icon.audio { background: rgba(124, 58, 237, 0.1); color: var(--accent); }
+        .download-item-icon.cover { background: rgba(0, 242, 234, 0.1); color: var(--secondary); }
+        .download-item-icon.photo { background: rgba(253, 29, 29, 0.1); color: var(--ig-pink); }
+        .download-item-icon.ig-video { background: linear-gradient(135deg, rgba(131, 58, 180, 0.1), rgba(253, 29, 29, 0.1)); color: var(--ig-pink); }
 
-        .download-item-icon.audio {
-            background: rgba(124, 58, 237, 0.1);
-            color: var(--accent);
-        }
-
-        .download-item-icon.cover {
-            background: rgba(0, 242, 234, 0.1);
-            color: var(--secondary);
-        }
-
-        .download-item-info h5 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .download-item-info p {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
+        .download-item-info h5 { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
+        .download-item-info p { font-size: 0.75rem; color: var(--text-muted); }
 
         /* ====== BACK BUTTON ====== */
-        .back-action {
-            display: flex;
-            justify-content: center;
-            margin-top: 24px;
-        }
+        .back-action { display: flex; justify-content: center; margin-top: 24px; }
 
         .back-btn {
             display: inline-flex;
@@ -907,26 +943,11 @@
         }
 
         /* ====== FEATURES SECTION ====== */
-        .features-section {
-            margin: 50px 0;
-            animation: slideUp 0.5s ease-out 0.4s both;
-        }
+        .features-section { margin: 50px 0; animation: slideUp 0.5s ease-out 0.4s both; }
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .section-title h2 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .section-title p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        .section-title { text-align: center; margin-bottom: 32px; }
+        .section-title h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
+        .section-title p { color: var(--text-muted); font-size: 0.9rem; }
 
         .features-grid {
             display: grid;
@@ -951,8 +972,7 @@
         }
 
         .feature-card .icon {
-            width: 48px;
-            height: 48px;
+            width: 48px; height: 48px;
             margin: 0 auto 14px;
             border-radius: var(--radius-md);
             display: flex;
@@ -968,22 +988,11 @@
         .feature-card:nth-child(5) .icon { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
         .feature-card:nth-child(6) .icon { background: rgba(59, 130, 246, 0.1); color: var(--info); }
 
-        .feature-card h3 {
-            font-size: 0.95rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .feature-card p {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
+        .feature-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+        .feature-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
 
         /* ====== HOW TO SECTION ====== */
-        .howto-section {
-            margin: 50px 0;
-        }
+        .howto-section { margin: 50px 0; }
 
         .steps-container {
             display: flex;
@@ -1005,8 +1014,7 @@
         }
 
         .step-card .step-num {
-            width: 32px;
-            height: 32px;
+            width: 32px; height: 32px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border-radius: var(--radius-full);
@@ -1018,92 +1026,16 @@
             margin: 0 auto 16px;
         }
 
-        .step-card h4 {
-            font-size: 0.95rem;
-            font-weight: 700;
-            margin-bottom: 8px;
+        .input-card.instagram ~ .howto-section .step-card .step-num,
+        .platform-content.active .step-card .step-num.ig-step {
+            background: linear-gradient(135deg, var(--ig-purple), var(--ig-pink), var(--ig-orange));
         }
 
-        .step-card p {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        /* ====== HISTORY SECTION ====== */
-        .history-section {
-            margin: 50px 0;
-        }
-
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .history-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 18px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-glass);
-            border-radius: var(--radius-md);
-            transition: var(--transition);
-        }
-
-        .history-item:hover {
-            border-color: var(--border-glass-hover);
-        }
-
-        .history-thumb {
-            width: 50px;
-            height: 50px;
-            border-radius: var(--radius-sm);
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .history-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .history-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .history-info h5 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .history-info span {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
-
-        .history-empty {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .history-empty i {
-            font-size: 2rem;
-            margin-bottom: 12px;
-            display: block;
-        }
+        .step-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+        .step-card p { font-size: 0.8rem; color: var(--text-muted); }
 
         /* ====== FAQ SECTION ====== */
-        .faq-section {
-            margin: 50px 0;
-        }
+        .faq-section { margin: 50px 0; }
 
         .faq-item {
             background: var(--bg-card);
@@ -1124,18 +1056,9 @@
             transition: var(--transition);
         }
 
-        .faq-question:hover {
-            background: var(--bg-glass-hover);
-        }
-
-        .faq-question i {
-            transition: transform 0.3s ease;
-            color: var(--text-muted);
-        }
-
-        .faq-item.open .faq-question i {
-            transform: rotate(180deg);
-        }
+        .faq-question:hover { background: var(--bg-glass-hover); }
+        .faq-question i { transition: transform 0.3s ease; color: var(--text-muted); }
+        .faq-item.open .faq-question i { transform: rotate(180deg); }
 
         .faq-answer {
             max-height: 0;
@@ -1143,9 +1066,7 @@
             transition: max-height 0.3s ease;
         }
 
-        .faq-item.open .faq-answer {
-            max-height: 200px;
-        }
+        .faq-item.open .faq-answer { max-height: 200px; }
 
         .faq-answer p {
             padding: 0 20px 18px;
@@ -1162,11 +1083,7 @@
             margin-top: 60px;
         }
 
-        .footer p {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
+        .footer p { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; }
 
         .footer .footer-links {
             display: flex;
@@ -1182,15 +1099,12 @@
             transition: var(--transition);
         }
 
-        .footer .footer-links a:hover {
-            color: var(--primary);
-        }
+        .footer .footer-links a:hover { color: var(--primary); }
 
         /* ====== TOAST NOTIFICATIONS ====== */
         .toast-container {
             position: fixed;
-            top: 80px;
-            right: 20px;
+            top: 80px; right: 20px;
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -1207,38 +1121,26 @@
             border: 1px solid var(--border-glass);
             border-radius: var(--radius-md);
             box-shadow: var(--shadow-lg);
-            animation: toastIn 0.4s ease-out;
+            animation: toastIn 0.3s ease-out;
             position: relative;
             overflow: hidden;
         }
 
-        .toast.removing {
-            animation: toastOut 0.3s ease-in forwards;
-        }
+        .toast.removing { animation: toastOut 0.25s ease-in forwards; }
 
         @keyframes toastIn {
-            from {
-                opacity: 0;
-                transform: translateX(100%) scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0) scale(1);
-            }
+            from { opacity: 0; transform: translateX(100%) scale(0.8); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
         }
 
         @keyframes toastOut {
-            to {
-                opacity: 0;
-                transform: translateX(100%) scale(0.8);
-            }
+            to { opacity: 0; transform: translateX(100%) scale(0.8); }
         }
 
         .toast::before {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
+            bottom: 0; left: 0;
             height: 3px;
             background: var(--primary);
             animation: toastTimer 4s linear forwards;
@@ -1250,8 +1152,7 @@
         }
 
         .toast-icon {
-            width: 32px;
-            height: 32px;
+            width: 32px; height: 32px;
             border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
@@ -1271,20 +1172,9 @@
         .toast.download .toast-icon { background: rgba(255, 0, 80, 0.1); color: var(--primary); }
         .toast.download::before { background: linear-gradient(90deg, var(--primary), var(--secondary)); }
 
-        .toast-content {
-            flex: 1;
-        }
-
-        .toast-content h4 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .toast-content p {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
+        .toast-content { flex: 1; }
+        .toast-content h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 2px; }
+        .toast-content p { font-size: 0.75rem; color: var(--text-muted); }
 
         .toast-close {
             background: none;
@@ -1296,33 +1186,48 @@
             transition: var(--transition);
         }
 
-        .toast-close:hover {
-            color: var(--text-primary);
-        }
+        .toast-close:hover { color: var(--text-primary); }
 
-        /* ====== DOWNLOAD NOTIFICATION (Special) ====== */
+        /* ====== DOWNLOAD NOTIFICATION (IMPROVED) ====== */
         .download-notification {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 360px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-glass);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
+            bottom: 30px; right: 30px;
+            width: 380px;
+            background: rgba(20, 20, 30, 0.85);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+                0 0 80px rgba(255, 0, 80, 0.1);
             z-index: 9998;
             overflow: hidden;
-            animation: downloadNotifIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation: downloadNotifIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        [data-theme="light"] .download-notification {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .download-notification.ig-download {
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+                0 0 80px rgba(253, 29, 29, 0.15);
         }
 
         .download-notification.hiding {
-            animation: downloadNotifOut 0.3s ease-in forwards;
+            animation: downloadNotifOut 0.25s ease-in forwards;
         }
 
         @keyframes downloadNotifIn {
             from {
                 opacity: 0;
-                transform: translateY(100px) scale(0.8);
+                transform: translateY(30px) scale(0.92);
             }
             to {
                 opacity: 1;
@@ -1333,49 +1238,143 @@
         @keyframes downloadNotifOut {
             to {
                 opacity: 0;
-                transform: translateY(100px) scale(0.8);
+                transform: translateY(30px) scale(0.92);
             }
+        }
+
+        .dn-bg-glow {
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 0, 80, 0.15), transparent 50%);
+            animation: glowRotate 8s linear infinite;
+            pointer-events: none;
+        }
+
+        .download-notification.ig-download .dn-bg-glow {
+            background: radial-gradient(circle at center, rgba(253, 29, 29, 0.15), transparent 50%);
+        }
+
+        @keyframes glowRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .download-notif-header {
             padding: 16px 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid var(--border-glass);
+            gap: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
         }
 
-        .download-notif-header .dn-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: var(--radius-sm);
+        .dn-progress-ring {
+            position: relative;
+            width: 52px; height: 52px;
+            flex-shrink: 0;
+        }
+
+        .dn-progress-ring svg {
+            transform: rotate(-90deg);
+            width: 52px; height: 52px;
+        }
+
+        .dn-progress-ring .ring-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.08);
+            stroke-width: 4;
+        }
+
+        .dn-progress-ring .ring-fill {
+            fill: none;
+            stroke: url(#dnGradient);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 138.23;
+            stroke-dashoffset: 138.23;
+            transition: stroke-dashoffset 0.3s ease;
+        }
+
+        .download-notification.ig-download .ring-fill {
+            stroke: url(#dnGradientIg);
+        }
+
+        .dn-progress-ring .ring-percent {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .dn-info { flex: 1; min-width: 0; }
+
+        .dn-info h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dn-info h4 .dn-status-dot {
+            width: 6px; height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulseDot 1.5s infinite;
+        }
+
+        .download-notification.ig-download .dn-info h4 .dn-status-dot {
+            background: var(--ig-pink);
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .dn-info span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+        .dn-close {
+            width: 28px; height: 28px;
+            border-radius: var(--radius-full);
+            border: none;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 0.9rem;
+            transition: var(--transition);
+            font-size: 0.75rem;
+            flex-shrink: 0;
         }
 
-        .download-notif-header .dn-info {
-            flex: 1;
-        }
-
-        .download-notif-header .dn-info h4 {
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .download-notif-header .dn-info span {
-            font-size: 0.7rem;
-            color: var(--text-muted);
+        .dn-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            transform: rotate(90deg);
         }
 
         .download-notif-body {
             padding: 16px 20px;
+            position: relative;
+            z-index: 1;
         }
 
-        .download-notif-body .file-info {
+        .file-info {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -1383,17 +1382,19 @@
         }
 
         .file-info .file-thumb {
-            width: 44px;
-            height: 44px;
+            width: 44px; height: 44px;
             border-radius: var(--radius-sm);
             overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
         }
 
         .file-info .file-thumb img {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
         }
+
+        .file-info .file-details { flex: 1; min-width: 0; }
 
         .file-info .file-details h5 {
             font-size: 0.8rem;
@@ -1401,7 +1402,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 220px;
+            margin-bottom: 2px;
         }
 
         .file-info .file-details span {
@@ -1411,45 +1412,79 @@
 
         .download-progress {
             width: 100%;
-            height: 6px;
-            background: var(--border-glass);
-            border-radius: 6px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
             overflow: hidden;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            position: relative;
         }
 
         .download-progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            background-size: 200% 100%;
+            border-radius: 8px;
             width: 0%;
-            transition: width 0.3s ease;
+            transition: width 0.25s ease;
+            animation: gradientFlow 2s linear infinite;
+            position: relative;
+        }
+
+        .download-notification.ig-download .download-progress-bar {
+            background: linear-gradient(90deg, var(--ig-purple), var(--ig-pink), var(--ig-orange));
+            background-size: 200% 100%;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .download-progress-shimmer {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 1.5s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         .download-progress-text {
             display: flex;
             justify-content: space-between;
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .download-notif-footer {
             padding: 12px 20px;
-            border-top: 1px solid var(--border-glass);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             justify-content: flex-end;
             gap: 8px;
+            position: relative;
+            z-index: 1;
         }
 
         .dn-btn {
-            padding: 6px 14px;
+            padding: 7px 16px;
             border-radius: var(--radius-sm);
             font-size: 0.75rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
             border: none;
             font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .dn-btn.primary {
@@ -1457,23 +1492,37 @@
             color: white;
         }
 
+        .download-notification.ig-download .dn-btn.primary {
+            background: linear-gradient(135deg, var(--ig-purple), var(--ig-pink));
+        }
+
         .dn-btn.secondary {
-            background: var(--bg-glass);
-            border: 1px solid var(--border-glass);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: var(--text-secondary);
         }
 
-        .dn-btn:hover {
-            transform: scale(1.02);
+        .dn-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+        /* Complete state */
+        .download-notification.complete .dn-progress-ring .ring-fill {
+            stroke: var(--success);
+        }
+
+        .download-notification.complete .download-progress-bar {
+            background: var(--success);
+            animation: none;
+        }
+
+        .download-notification.complete .dn-bg-glow {
+            background: radial-gradient(circle at center, rgba(16, 185, 129, 0.2), transparent 50%);
         }
 
         /* ====== VIDEO MODAL ====== */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             z-index: 10000;
@@ -1485,7 +1534,7 @@
 
         .modal-overlay.active {
             display: flex;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.25s ease;
         }
 
         .modal-content {
@@ -1496,18 +1545,17 @@
             position: relative;
         }
 
-        .modal-content video {
+        .modal-content video, .modal-content img {
             width: 100%;
             max-height: 80vh;
             border-radius: var(--radius-lg);
+            display: block;
         }
 
         .modal-close {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            width: 36px;
-            height: 36px;
+            top: 12px; right: 12px;
+            width: 36px; height: 36px;
             border-radius: var(--radius-full);
             background: rgba(0, 0, 0, 0.6);
             border: none;
@@ -1525,139 +1573,98 @@
         }
 
         /* ====== ANIMATIONS ====== */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         /* ====== SCROLLBAR ====== */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-glass);
-            border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--border-glass-hover);
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-glass); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border-glass-hover); }
 
         /* ====== RESPONSIVE ====== */
         @media (max-width: 768px) {
-            .navbar {
-                padding: 12px 16px;
-            }
-
-            .stats-badge {
-                display: none;
-            }
-
-            .main-container {
-                padding: 80px 16px 30px;
-            }
-
-            .hero {
-                padding: 40px 0 20px;
-            }
-
-            .input-card {
-                padding: 20px;
-            }
-
-            .video-preview-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .video-thumbnail {
-                width: 140px;
-                min-width: 140px;
-                height: 186px;
-            }
-
-            .video-details {
-                text-align: center;
-            }
-
-            .video-meta {
-                justify-content: center;
-            }
-
-            .download-grid {
-                grid-template-columns: 1fr;
-            }
-
+            .navbar { padding: 12px 16px; }
+            .stats-badge { display: none; }
+            .main-container { padding: 80px 16px 30px; }
+            .hero { padding: 30px 0 15px; }
+            .input-card { padding: 20px; }
+            .video-preview-container { flex-direction: column; align-items: center; }
+            .video-thumbnail { width: 140px; min-width: 140px; height: 186px; }
+            .video-details { text-align: center; }
+            .video-meta { justify-content: center; }
+            .download-grid { grid-template-columns: 1fr; }
             .download-notification {
-                width: calc(100% - 40px);
-                right: 20px;
-                bottom: 20px;
+                width: calc(100% - 32px);
+                right: 16px; bottom: 16px;
             }
-
-            .toast-container {
-                right: 10px;
-                left: 10px;
-                max-width: none;
-            }
-
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .steps-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .step-card {
-                max-width: 100%;
-            }
+            .toast-container { right: 10px; left: 10px; max-width: none; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .steps-container { flex-direction: column; align-items: center; }
+            .step-card { max-width: 100%; }
+            .platform-tabs { max-width: 100%; }
+            .tab-btn { padding: 10px 14px; font-size: 0.85rem; }
+            .tab-btn span.tab-label-long { display: none; }
         }
 
         @media (max-width: 480px) {
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-        }
-
-        /* ====== SKELETON LOADING ====== */
-        .skeleton {
-            background: linear-gradient(90deg, var(--bg-glass) 25%, var(--bg-glass-hover) 50%, var(--bg-glass) 75%);
-            background-size: 200% 100%;
-            animation: skeleton 1.5s infinite;
-            border-radius: var(--radius-sm);
-        }
-
-        @keyframes skeleton {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+            .features-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 1.7rem; }
         }
 
         /* ====== CONFETTI ====== */
         .confetti-piece {
             position: fixed;
-            width: 10px;
-            height: 10px;
+            width: 10px; height: 10px;
             z-index: 99999;
             pointer-events: none;
         }
+
+        /* ====== SUPPORTED TYPES BADGE ====== */
+        .supported-types {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 16px;
+            animation: slideUp 0.5s ease-out 0.35s both;
+        }
+
+        .type-badge {
+            padding: 6px 12px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .type-badge i { font-size: 0.7rem; }
+        .type-badge.tiktok-badge i { color: var(--tiktok); }
+        .type-badge.ig-badge i { color: var(--ig-pink); }
     </style>
 </head>
 <body>
+    <!-- SVG Gradients for Progress Rings -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <linearGradient id="dnGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff0050"/>
+                <stop offset="100%" stop-color="#00f2ea"/>
+            </linearGradient>
+            <linearGradient id="dnGradientIg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#833ab4"/>
+                <stop offset="50%" stop-color="#fd1d1d"/>
+                <stop offset="100%" stop-color="#fcb045"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
     <!-- Preloader -->
     <div id="preloader">
         <div class="preloader-logo">
@@ -1676,18 +1683,15 @@
 
     <!-- Navbar -->
     <nav class="navbar">
-        <a href="#" class="navbar-brand" onclick="showPage('input'); return false;">
-            <div class="brand-icon"><i class="fab fa-tiktok"></i></div>
-            <span>TikSaver<span style="color: var(--primary)">Pro</span></span>
+        <a href="#" class="navbar-brand" onclick="showPage('home'); return false;">
+            <div class="brand-icon"><i class="fas fa-download"></i></div>
+            <span>Social<span style="color: var(--primary)">Saver</span></span>
         </a>
         <div class="navbar-actions">
             <div class="stats-badge">
                 <span class="dot"></span>
                 <span id="totalDownloads">0</span> Downloads
             </div>
-            <button class="nav-btn" id="historyBtn" title="Riwayat">
-                <i class="fas fa-clock-rotate-left"></i>
-            </button>
             <button class="nav-btn" id="themeBtn" title="Ganti Tema">
                 <i class="fas fa-moon"></i>
             </button>
@@ -1698,87 +1702,173 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Video Modal -->
-    <div class="modal-overlay" id="videoModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeVideoModal()"><i class="fas fa-times"></i></button>
-            <video id="modalVideo" controls autoplay></video>
+    <div class="modal-overlay" id="mediaModal">
+        <div class="modal-content" id="modalContent">
+            <button class="modal-close" onclick="closeMediaModal()"><i class="fas fa-times"></i></button>
         </div>
     </div>
 
     <!-- Main Content -->
     <div class="main-container">
-        <!-- INPUT PAGE -->
-        <div class="page active" id="page-input">
+        <!-- HOME PAGE -->
+        <div class="page active" id="page-home">
             <section class="hero">
                 <div class="hero-badge">
                     <i class="fas fa-sparkles"></i>
                     <span>Gratis • Tanpa Login • Tanpa Watermark</span>
                 </div>
-                <h1>Download Video TikTok<br><span class="gradient-text">Super Cepat & Mudah</span></h1>
-                <p>Simpan video TikTok favoritmu dalam kualitas HD tanpa watermark. Cukup paste link dan download!</p>
+                <h1>Download Video <span class="gradient-text" id="heroGradient">Super Cepat</span></h1>
+                <p id="heroDesc">Simpan video TikTok & Instagram favoritmu dalam kualitas HD. Cukup paste link dan download!</p>
+
+                <!-- Platform Tabs -->
+                <div class="platform-tabs">
+                    <button class="tab-btn active" data-platform="tiktok" onclick="switchPlatform('tiktok')">
+                        <div class="tab-icon"><i class="fab fa-tiktok"></i></div>
+                        <span>TikTok</span>
+                    </button>
+                    <button class="tab-btn" data-platform="instagram" onclick="switchPlatform('instagram')">
+                        <div class="tab-icon"><i class="fab fa-instagram"></i></div>
+                        <span>Instagram</span>
+                    </button>
+                </div>
             </section>
 
-            <div class="input-card">
-                <div class="input-wrapper">
-                    <div class="input-icon">
-                        <i class="fas fa-link"></i>
+            <!-- TIKTOK PLATFORM -->
+            <div class="platform-content active" id="platform-tiktok">
+                <div class="input-card">
+                    <div class="input-wrapper">
+                        <div class="input-icon"><i class="fab fa-tiktok"></i></div>
+                        <input type="text" class="url-input" id="tiktokInput" placeholder="Paste link TikTok di sini..." autocomplete="off">
+                        <div class="input-actions">
+                            <button class="input-action-btn" onclick="pasteFromClipboard('tiktokInput')" title="Paste">
+                                <i class="fas fa-paste"></i>
+                            </button>
+                            <button class="input-action-btn" onclick="clearInput('tiktokInput')" title="Hapus">
+                                <i class="fas fa-xmark"></i>
+                            </button>
+                        </div>
                     </div>
-                    <input type="text" class="url-input" id="urlInput" placeholder="Paste link TikTok di sini..." autocomplete="off">
-                    <div class="input-actions">
-                        <button class="input-action-btn" id="pasteBtn" title="Paste dari clipboard">
-                            <i class="fas fa-paste"></i>
-                        </button>
-                        <button class="input-action-btn" id="clearBtn" title="Hapus">
-                            <i class="fas fa-xmark"></i>
-                        </button>
+
+                    <button class="process-btn" id="tiktokProcessBtn" onclick="processTikTokLink()">
+                        <i class="fas fa-download"></i>
+                        <span>Download TikTok</span>
+                    </button>
+
+                    <div class="loading-state" id="tiktokLoading">
+                        <div class="loading-dots"><span></span><span></span><span></span></div>
+                        <p class="loading-text" id="tiktokLoadingText">Menganalisis link TikTok...</p>
+                        <div class="loading-progress">
+                            <div class="loading-progress-bar" id="tiktokProgressBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="error-state" id="tiktokError">
+                        <i class="fas fa-circle-exclamation"></i>
+                        <span id="tiktokErrorText">Terjadi kesalahan</span>
                     </div>
                 </div>
 
-                <button class="process-btn" id="processBtn">
-                    <i class="fas fa-download"></i>
-                    <span>Download Sekarang</span>
-                </button>
-
-                <div class="loading-state" id="loadingState">
-                    <div class="loading-dots">
-                        <span></span><span></span><span></span>
-                    </div>
-                    <p class="loading-text" id="loadingText">Menganalisis link TikTok...</p>
-                    <div class="loading-progress">
-                        <div class="loading-progress-bar" id="progressBar"></div>
-                    </div>
+                <div class="supported-types">
+                    <span class="type-badge tiktok-badge"><i class="fas fa-video"></i> Video HD</span>
+                    <span class="type-badge tiktok-badge"><i class="fas fa-film"></i> Video SD</span>
+                    <span class="type-badge tiktok-badge"><i class="fas fa-music"></i> Audio MP3</span>
+                    <span class="type-badge tiktok-badge"><i class="fas fa-image"></i> Cover</span>
                 </div>
 
-                <div class="error-state" id="errorState">
-                    <i class="fas fa-circle-exclamation"></i>
-                    <span id="errorText">Terjadi kesalahan</span>
-                </div>
+                <!-- How To TikTok -->
+                <section class="howto-section">
+                    <div class="section-title">
+                        <h2>Cara Download TikTok</h2>
+                        <p>Hanya 3 langkah mudah untuk mengunduh video</p>
+                    </div>
+                    <div class="steps-container">
+                        <div class="step-card">
+                            <div class="step-num">1</div>
+                            <h4>Salin Link</h4>
+                            <p>Buka TikTok, tap "Share" pada video, lalu pilih "Copy Link"</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-num">2</div>
+                            <h4>Paste Link</h4>
+                            <p>Tempel link yang sudah disalin ke kolom input di atas</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-num">3</div>
+                            <h4>Download</h4>
+                            <p>Pilih format yang diinginkan dan video akan otomatis terunduh</p>
+                        </div>
+                    </div>
+                </section>
             </div>
 
-            <!-- How To -->
-            <section class="howto-section">
-                <div class="section-title">
-                    <h2>Cara Download</h2>
-                    <p>Hanya 3 langkah mudah untuk mengunduh video</p>
+            <!-- INSTAGRAM PLATFORM -->
+            <div class="platform-content" id="platform-instagram">
+                <div class="input-card instagram">
+                    <div class="input-wrapper">
+                        <div class="input-icon"><i class="fab fa-instagram"></i></div>
+                        <input type="text" class="url-input" id="igInput" placeholder="Paste link Instagram di sini..." autocomplete="off">
+                        <div class="input-actions">
+                            <button class="input-action-btn" onclick="pasteFromClipboard('igInput')" title="Paste">
+                                <i class="fas fa-paste"></i>
+                            </button>
+                            <button class="input-action-btn" onclick="clearInput('igInput')" title="Hapus">
+                                <i class="fas fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="process-btn" id="igProcessBtn" onclick="processInstagramLink()">
+                        <i class="fas fa-download"></i>
+                        <span>Download Instagram</span>
+                    </button>
+
+                    <div class="loading-state" id="igLoading">
+                        <div class="loading-dots"><span></span><span></span><span></span></div>
+                        <p class="loading-text" id="igLoadingText">Menganalisis link Instagram...</p>
+                        <div class="loading-progress">
+                            <div class="loading-progress-bar" id="igProgressBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="error-state" id="igError">
+                        <i class="fas fa-circle-exclamation"></i>
+                        <span id="igErrorText">Terjadi kesalahan</span>
+                    </div>
                 </div>
-                <div class="steps-container">
-                    <div class="step-card">
-                        <div class="step-num">1</div>
-                        <h4>Salin Link</h4>
-                        <p>Buka TikTok, tap "Share" pada video, lalu pilih "Copy Link"</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-num">2</div>
-                        <h4>Paste Link</h4>
-                        <p>Tempel link yang sudah disalin ke kolom input di atas</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-num">3</div>
-                        <h4>Download</h4>
-                        <p>Pilih format yang diinginkan dan video akan otomatis terunduh</p>
-                    </div>
+
+                <div class="supported-types">
+                    <span class="type-badge ig-badge"><i class="fas fa-video"></i> Reels</span>
+                    <span class="type-badge ig-badge"><i class="fas fa-image"></i> Foto/Post</span>
+                    <span class="type-badge ig-badge"><i class="fas fa-images"></i> Carousel</span>
+                    <span class="type-badge ig-badge"><i class="fas fa-circle-play"></i> Story</span>
+                    <span class="type-badge ig-badge"><i class="fas fa-tv"></i> IGTV</span>
                 </div>
-            </section>
+
+                <!-- How To Instagram -->
+                <section class="howto-section">
+                    <div class="section-title">
+                        <h2>Cara Download Instagram</h2>
+                        <p>Support Reels, Post, Story, IGTV, & Carousel</p>
+                    </div>
+                    <div class="steps-container">
+                        <div class="step-card">
+                            <div class="step-num ig-step">1</div>
+                            <h4>Salin Link</h4>
+                            <p>Buka Instagram, tap "..." pada postingan, lalu pilih "Copy Link"</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-num ig-step">2</div>
+                            <h4>Paste Link</h4>
+                            <p>Tempel link yang sudah disalin ke kolom input di atas</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-num ig-step">3</div>
+                            <h4>Download</h4>
+                            <p>Pilih format yang diinginkan - foto, video, atau semua sekaligus</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
 
             <!-- Features -->
             <section class="features-section">
@@ -1795,7 +1885,7 @@
                     <div class="feature-card">
                         <div class="icon"><i class="fas fa-droplet-slash"></i></div>
                         <h3>Tanpa Watermark</h3>
-                        <p>Video bersih tanpa logo TikTok yang mengganggu</p>
+                        <p>Video bersih tanpa logo yang mengganggu</p>
                     </div>
                     <div class="feature-card">
                         <div class="icon"><i class="fas fa-film"></i></div>
@@ -1820,20 +1910,6 @@
                 </div>
             </section>
 
-            <!-- History -->
-            <section class="history-section" id="historySection">
-                <div class="section-title">
-                    <h2>Riwayat Download</h2>
-                    <p>Video yang baru saja kamu download</p>
-                </div>
-                <div class="history-list" id="historyList">
-                    <div class="history-empty">
-                        <i class="fas fa-inbox"></i>
-                        <p>Belum ada riwayat download</p>
-                    </div>
-                </div>
-            </section>
-
             <!-- FAQ -->
             <section class="faq-section">
                 <div class="section-title">
@@ -1846,16 +1922,16 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Ya, TikSaver Pro 100% gratis untuk digunakan. Tidak ada biaya tersembunyi dan tidak perlu registrasi.</p>
+                        <p>Ya, SocialSaver 100% gratis untuk digunakan. Tidak ada biaya tersembunyi dan tidak perlu registrasi.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Apakah video yang didownload ada watermark?</span>
+                        <span>Konten Instagram apa saja yang bisa didownload?</span>
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Tidak! Semua video yang didownload melalui TikSaver Pro bebas dari watermark TikTok.</p>
+                        <p>Kamu bisa download Reels, Post (foto/video), Carousel (multi-foto), Story, dan IGTV. Semua dalam kualitas HD.</p>
                     </div>
                 </div>
                 <div class="faq-item">
@@ -1864,24 +1940,24 @@
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Kami menyediakan format Video HD (tanpa watermark), Video SD, Audio MP3, dan cover/thumbnail video.</p>
+                        <p>Untuk TikTok: Video HD, Video SD, Audio MP3, dan Cover. Untuk Instagram: Video HD, Foto, dan semua media dalam carousel.</p>
                     </div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Apakah bisa download video privat?</span>
+                        <span>Apakah bisa download konten privat?</span>
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="faq-answer">
-                        <p>Tidak, alat ini hanya bisa mendownload video yang bersifat publik. Video yang di-set privat tidak dapat diakses.</p>
+                        <p>Tidak, alat ini hanya bisa mendownload konten yang bersifat publik. Konten privat atau close friends tidak dapat diakses.</p>
                     </div>
                 </div>
             </section>
 
             <!-- Footer -->
             <footer class="footer">
-                <p>TikSaver Pro &copy; <span id="footerYear">2026</span> — TikTok Video Downloader</p>
-                <p>Tool ini tidak berafiliasi dengan TikTok. Gunakan dengan bijak.</p>
+                <p>SocialSaver &copy; <span id="footerYear">2026</span> — Social Media Downloader</p>
+                <p>create by akhso</p>
                 <div class="footer-links">
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Service</a>
@@ -1890,41 +1966,38 @@
             </footer>
         </div>
 
-        <!-- RESULT PAGE -->
-        <div class="page" id="page-result">
+        <!-- TIKTOK RESULT PAGE -->
+        <div class="page" id="page-tiktok-result">
             <div class="result-card">
                 <div class="result-header">
-                    <div class="check-icon">
-                        <i class="fas fa-check"></i>
-                    </div>
+                    <div class="check-icon"><i class="fas fa-check"></i></div>
                     <div class="result-header-text">
-                        <h3>Video Berhasil Diproses!</h3>
+                        <h3>Video TikTok Berhasil Diproses!</h3>
                         <p>Pilih format download yang kamu inginkan</p>
                     </div>
                 </div>
-
                 <div class="result-body">
                     <div class="video-preview-container">
-                        <div class="video-thumbnail" id="thumbContainer">
-                            <img id="resultThumb" src="" alt="Thumbnail">
-                            <div class="play-overlay" onclick="playPreview()">
+                        <div class="video-thumbnail" id="ttThumbContainer">
+                            <img id="ttResultThumb" src="" alt="Thumbnail">
+                            <div class="play-overlay" onclick="playPreview('tiktok')">
                                 <i class="fas fa-play"></i>
                             </div>
                         </div>
                         <div class="video-details">
-                            <h4 id="resultTitle">Judul Video TikTok</h4>
+                            <h4 id="ttResultTitle">Judul Video TikTok</h4>
                             <div class="video-meta">
                                 <div class="meta-item">
                                     <i class="fas fa-user"></i>
-                                    <span id="resultAuthor">@username</span>
+                                    <span id="ttResultAuthor">@username</span>
                                 </div>
                                 <div class="meta-item">
                                     <i class="fas fa-heart"></i>
-                                    <span id="resultLikes">0</span>
+                                    <span id="ttResultLikes">0</span>
                                 </div>
                                 <div class="meta-item">
                                     <i class="fas fa-clock"></i>
-                                    <span id="resultDuration">0:00</span>
+                                    <span id="ttResultDuration">0:00</span>
                                 </div>
                             </div>
                         </div>
@@ -1934,38 +2007,30 @@
                         <div class="download-section-title">
                             <i class="fas fa-download"></i> Pilihan Download
                         </div>
-                        <div class="download-grid">
-                            <a href="#" class="download-item featured" id="dlHd" onclick="handleDownload(event, 'hd')">
-                                <div class="download-item-icon video">
-                                    <i class="fas fa-video"></i>
-                                </div>
+                        <div class="download-grid" id="ttDownloadGrid">
+                            <a href="#" class="download-item featured" id="ttDlHd" onclick="handleDownload(event, 'tiktok', 'hd')">
+                                <div class="download-item-icon video"><i class="fas fa-video"></i></div>
                                 <div class="download-item-info">
                                     <h5>Video HD</h5>
                                     <p>Tanpa Watermark • Kualitas Tinggi</p>
                                 </div>
                             </a>
-                            <a href="#" class="download-item" id="dlSd" onclick="handleDownload(event, 'sd')">
-                                <div class="download-item-icon video">
-                                    <i class="fas fa-film"></i>
-                                </div>
+                            <a href="#" class="download-item" id="ttDlSd" onclick="handleDownload(event, 'tiktok', 'sd')">
+                                <div class="download-item-icon video"><i class="fas fa-film"></i></div>
                                 <div class="download-item-info">
                                     <h5>Video SD</h5>
                                     <p>Ukuran Lebih Kecil</p>
                                 </div>
                             </a>
-                            <a href="#" class="download-item" id="dlAudio" onclick="handleDownload(event, 'audio')">
-                                <div class="download-item-icon audio">
-                                    <i class="fas fa-music"></i>
-                                </div>
+                            <a href="#" class="download-item" id="ttDlAudio" onclick="handleDownload(event, 'tiktok', 'audio')">
+                                <div class="download-item-icon audio"><i class="fas fa-music"></i></div>
                                 <div class="download-item-info">
                                     <h5>Audio MP3</h5>
                                     <p>Ekstrak Suara Saja</p>
                                 </div>
                             </a>
-                            <a href="#" class="download-item" id="dlCover" onclick="handleDownload(event, 'cover')">
-                                <div class="download-item-icon cover">
-                                    <i class="fas fa-image"></i>
-                                </div>
+                            <a href="#" class="download-item" id="ttDlCover" onclick="handleDownload(event, 'tiktok', 'cover')">
+                                <div class="download-item-icon cover"><i class="fas fa-image"></i></div>
                                 <div class="download-item-info">
                                     <h5>Cover/Thumbnail</h5>
                                     <p>Gambar Cover Video</p>
@@ -1975,9 +2040,73 @@
                     </div>
 
                     <div class="back-action">
-                        <button class="back-btn" onclick="showPage('input')">
+                        <button class="back-btn" onclick="showPage('home')">
                             <i class="fas fa-arrow-left"></i>
                             Download Video Lain
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INSTAGRAM RESULT PAGE -->
+        <div class="page" id="page-ig-result">
+            <div class="result-card instagram-result">
+                <div class="result-header">
+                    <div class="check-icon" style="background: rgba(253, 29, 29, 0.1); border-color: var(--ig-pink); color: var(--ig-pink);">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="result-header-text">
+                        <h3>Konten Instagram Berhasil Diproses!</h3>
+                        <p id="igResultSubtitle">Pilih format download yang kamu inginkan</p>
+                    </div>
+                </div>
+                <div class="result-body">
+                    <div class="video-preview-container" id="igPreviewContainer">
+                        <div class="video-thumbnail" id="igThumbContainer">
+                            <img id="igResultThumb" src="" alt="Thumbnail">
+                            <div class="play-overlay" onclick="playPreview('instagram')">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-details">
+                            <h4 id="igResultTitle">Konten Instagram</h4>
+                            <div class="video-meta" id="igResultMeta">
+                                <div class="meta-item">
+                                    <i class="fas fa-user"></i>
+                                    <span id="igResultAuthor">@username</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-tag"></i>
+                                    <span id="igResultType">Reels</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-images"></i>
+                                    <span id="igResultCount">1 media</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Carousel Grid (for multi-image posts) -->
+                    <div id="igCarouselContainer" style="display:none;">
+                        <div class="download-section-title">
+                            <i class="fas fa-images"></i> Semua Media
+                        </div>
+                        <div class="carousel-grid" id="igCarouselGrid"></div>
+                    </div>
+
+                    <div class="download-section">
+                        <div class="download-section-title">
+                            <i class="fas fa-download"></i> Pilihan Download
+                        </div>
+                        <div class="download-grid" id="igDownloadGrid"></div>
+                    </div>
+
+                    <div class="back-action">
+                        <button class="back-btn" onclick="showPage('home')">
+                            <i class="fas fa-arrow-left"></i>
+                            Download Konten Lain
                         </button>
                     </div>
                 </div>
@@ -1987,33 +2116,18 @@
 
     <script>
         // ====== GLOBAL STATE ======
-        let currentVideoData = null;
+        let currentPlatform = 'tiktok';
+        let tiktokData = null;
+        let instagramData = null;
         let downloadCount = parseInt(localStorage.getItem('totalDownloads') || '0');
         let isDarkTheme = localStorage.getItem('theme') !== 'light';
 
         // ====== INITIALIZATION ======
         document.addEventListener('DOMContentLoaded', () => {
-            // Preloader
-            setTimeout(() => {
-                document.getElementById('preloader').classList.add('hide');
-            }, 1200);
-
-            // Set year
+            setTimeout(() => document.getElementById('preloader').classList.add('hide'), 900);
             document.getElementById('footerYear').textContent = new Date().getFullYear();
-
-            // Update download count
             updateDownloadCount();
-
-            // Load history
-            renderHistory();
-
-            // Apply theme
             applyTheme();
-
-            // Auto-detect clipboard
-            autoDetectClipboard();
-
-            // Placeholder rotation
             rotatePlaceholder();
         });
 
@@ -2031,6 +2145,48 @@
             showToast('info', 'Tema Diubah', isDarkTheme ? 'Mode gelap aktif' : 'Mode terang aktif');
         });
 
+        // ====== PLATFORM SWITCHER ======
+        function switchPlatform(platform) {
+            currentPlatform = platform;
+            
+            // Update tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.platform === platform);
+            });
+
+            // Update content
+            document.querySelectorAll('.platform-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`platform-${platform}`).classList.add('active');
+
+            // Update hero gradient
+            const heroGradient = document.getElementById('heroGradient');
+            const heroDesc = document.getElementById('heroDesc');
+            
+            if (platform === 'tiktok') {
+                heroGradient.textContent = 'Super Cepat';
+                heroDesc.textContent = 'Simpan video TikTok & Instagram favoritmu dalam kualitas HD. Cukup paste link dan download!';
+                document.documentElement.style.setProperty('--primary', 'var(--tiktok)');
+                document.documentElement.style.setProperty('--secondary', 'var(--tiktok-cyan)');
+            } else {
+                heroGradient.textContent = 'Mudah & Lengkap';
+                heroDesc.textContent = 'Download Reels, Foto, Story, Carousel & IGTV dari Instagram dalam kualitas terbaik!';
+                document.documentElement.style.setProperty('--primary', 'var(--ig-pink)');
+                document.documentElement.style.setProperty('--secondary', 'var(--ig-orange)');
+            }
+
+            // Update bg gradients
+            const bgGradients = document.querySelectorAll('.bg-gradient');
+            if (platform === 'tiktok') {
+                bgGradients[0].style.background = 'var(--tiktok)';
+                bgGradients[1].style.background = 'var(--tiktok-cyan)';
+            } else {
+                bgGradients[0].style.background = 'var(--ig-purple)';
+                bgGradients[1].style.background = 'var(--ig-pink)';
+            }
+        }
+
         // ====== PAGE NAVIGATION ======
         function showPage(page) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -2042,11 +2198,8 @@
         function showToast(type, title, message, duration = 4000) {
             const container = document.getElementById('toastContainer');
             const icons = {
-                success: 'fa-check',
-                error: 'fa-xmark',
-                warning: 'fa-exclamation',
-                info: 'fa-info',
-                download: 'fa-download'
+                success: 'fa-check', error: 'fa-xmark', warning: 'fa-exclamation',
+                info: 'fa-info', download: 'fa-download'
             };
 
             const toast = document.createElement('div');
@@ -2063,114 +2216,151 @@
             `;
 
             container.appendChild(toast);
-
             setTimeout(() => removeToast(toast), duration);
         }
 
         function removeToast(toast) {
             if (!toast || toast.classList.contains('removing')) return;
             toast.classList.add('removing');
-            setTimeout(() => toast.remove(), 300);
+            setTimeout(() => toast.remove(), 250);
         }
 
-        // ====== DOWNLOAD NOTIFICATION ======
-        function showDownloadNotification(fileName, fileType, thumbUrl) {
+        // ====== IMPROVED DOWNLOAD NOTIFICATION ======
+        function showDownloadNotification(fileName, fileType, thumbUrl, isInstagram = false) {
             // Remove existing notification
             const existing = document.querySelector('.download-notification');
-            if (existing) existing.remove();
+            if (existing) {
+                if (existing.dataset.interval) clearInterval(parseInt(existing.dataset.interval));
+                existing.remove();
+            }
 
             const notif = document.createElement('div');
-            notif.className = 'download-notification';
+            notif.className = `download-notification${isInstagram ? ' ig-download' : ''}`;
             notif.innerHTML = `
+                <div class="dn-bg-glow"></div>
                 <div class="download-notif-header">
-                    <div class="dn-icon"><i class="fas fa-download"></i></div>
-                    <div class="dn-info">
-                        <h4>Downloading...</h4>
-                        <span>Mohon tunggu sebentar</span>
+                    <div class="dn-progress-ring">
+                        <svg width="52" height="52">
+                            <circle class="ring-bg" cx="26" cy="26" r="22"/>
+                            <circle class="ring-fill" cx="26" cy="26" r="22"/>
+                        </svg>
+                        <span class="ring-percent">0%</span>
                     </div>
+                    <div class="dn-info">
+                        <h4><span class="dn-status-dot"></span> <span class="dn-title">Downloading...</span></h4>
+                        <span class="dn-subtitle">Moh tunggu sebentar</span>
+                    </div>
+                    <button class="dn-close" onclick="cancelDownload(this)"><i class="fas fa-xmark"></i></button>
                 </div>
                 <div class="download-notif-body">
                     <div class="file-info">
                         <div class="file-thumb">
-                            <img src="${thumbUrl || ''}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23333%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2230%22>🎬</text></svg>'">
+                            <img src="${thumbUrl || ''}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23333%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2260%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2240%22>🎬</text></svg>'">
                         </div>
                         <div class="file-details">
                             <h5>${fileName}</h5>
-                            <span>${fileType} • Memulai download...</span>
+                            <span>${fileType}</span>
                         </div>
                     </div>
                     <div class="download-progress">
-                        <div class="download-progress-bar" id="dnProgressBar"></div>
+                        <div class="download-progress-bar"></div>
+                        <div class="download-progress-shimmer"></div>
                     </div>
                     <div class="download-progress-text">
-                        <span id="dnPercent">0%</span>
-                        <span id="dnStatus">Memproses...</span>
+                        <span class="dn-status">Mengunduh...</span>
+                        <span class="dn-speed">0 MB/s</span>
                     </div>
                 </div>
                 <div class="download-notif-footer">
-                    <button class="dn-btn secondary" onclick="cancelDownload(this)">Batal</button>
-                    <button class="dn-btn primary" onclick="openFileLocation(this)">Buka File</button>
+                    <button class="dn-btn secondary" onclick="cancelDownload(this)"><i class="fas fa-xmark"></i> Batal</button>
+                    <button class="dn-btn primary" onclick="openFileLocation(this)"><i class="fas fa-folder-open"></i> Buka File</button>
                 </div>
             `;
 
             document.body.appendChild(notif);
-
-            // Simulate download progress
             simulateDownloadProgress(notif);
         }
 
         function simulateDownloadProgress(notif) {
             let progress = 0;
-            const progressBar = notif.querySelector('#dnProgressBar');
-            const percentText = notif.querySelector('#dnPercent');
-            const statusText = notif.querySelector('#dnStatus');
-            const header = notif.querySelector('.dn-info h4');
+            const progressBar = notif.querySelector('.download-progress-bar');
+            const percentText = notif.querySelector('.ring-percent');
+            const statusText = notif.querySelector('.dn-status');
+            const speedText = notif.querySelector('.dn-speed');
+            const titleEl = notif.querySelector('.dn-title');
+            const subtitleEl = notif.querySelector('.dn-subtitle');
+            const ringFill = notif.querySelector('.ring-fill');
+            const circumference = 2 * Math.PI * 22; // ~138.23
 
+            // Faster interval (180ms instead of 300ms)
             const interval = setInterval(() => {
-                progress += Math.random() * 15 + 5;
+                // Faster progress increments
+                const increment = Math.random() * 18 + 8;
+                progress += increment;
+                
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(interval);
                     
+                    // Update UI
                     progressBar.style.width = '100%';
                     percentText.textContent = '100%';
+                    ringFill.style.strokeDashoffset = '0';
                     statusText.textContent = 'Selesai!';
-                    header.textContent = 'Download Selesai! ✓';
+                    speedText.textContent = '✓';
+                    titleEl.textContent = 'Download Selesai!';
+                    subtitleEl.textContent = 'File berhasil disimpan';
                     
-                    // Change icon to success
-                    const icon = notif.querySelector('.dn-icon');
-                    icon.style.background = 'var(--success)';
-                    icon.innerHTML = '<i class="fas fa-check"></i>';
+                    // Remove pulsing dot
+                    const dot = notif.querySelector('.dn-status-dot');
+                    if (dot) dot.style.background = 'var(--success)';
+                    
+                    // Mark as complete
+                    notif.classList.add('complete');
 
                     // Show success toast
                     showToast('success', 'Download Selesai!', 'File berhasil disimpan ke perangkatmu');
+                    
+                    // Create mini confetti
+                    createMiniConfetti();
 
-                    // Auto hide after 5 seconds
+                    // Auto hide after 2.5s (faster than before)
                     setTimeout(() => {
-                        notif.classList.add('hiding');
-                        setTimeout(() => notif.remove(), 300);
-                    }, 5000);
+                        if (notif.parentElement) {
+                            notif.classList.add('hiding');
+                            setTimeout(() => notif.remove(), 250);
+                        }
+                    }, 2500);
                 } else {
                     progressBar.style.width = `${progress}%`;
                     percentText.textContent = `${Math.round(progress)}%`;
                     
-                    if (progress < 30) statusText.textContent = 'Mengunduh...';
+                    // Update ring
+                    const offset = circumference - (progress / 100) * circumference;
+                    ringFill.style.strokeDashoffset = offset;
+                    
+                    // Simulate speed
+                    const speed = (Math.random() * 3 + 1.5).toFixed(1);
+                    speedText.textContent = `${speed} MB/s`;
+                    
+                    // Update status messages
+                    if (progress < 25) statusText.textContent = 'Mengunduh...';
                     else if (progress < 60) statusText.textContent = 'Memproses file...';
                     else if (progress < 90) statusText.textContent = 'Hampir selesai...';
                     else statusText.textContent = 'Menyimpan file...';
                 }
-            }, 300);
+            }, 180); // Faster: 180ms instead of 300ms
 
-            // Store interval for cancel
             notif.dataset.interval = interval;
         }
 
         function cancelDownload(btn) {
             const notif = btn.closest('.download-notification');
+            if (!notif) return;
             const interval = parseInt(notif.dataset.interval);
-            clearInterval(interval);
+            if (interval) clearInterval(interval);
             notif.classList.add('hiding');
-            setTimeout(() => notif.remove(), 300);
+            setTimeout(() => notif.remove(), 250);
             showToast('warning', 'Download Dibatalkan', 'Download telah dibatalkan');
         }
 
@@ -2178,82 +2368,117 @@
             showToast('info', 'Info', 'File tersimpan di folder Downloads perangkatmu');
         }
 
+        function createMiniConfetti() {
+            const colors = ['#ff0050', '#00f2ea', '#7c3aed', '#f59e0b', '#10b981'];
+            const notif = document.querySelector('.download-notification');
+            if (!notif) return;
+            
+            const rect = notif.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top;
+
+            for (let i = 0; i < 15; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = centerX + 'px';
+                confetti.style.top = centerY + 'px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 6 + 4 + 'px';
+                confetti.style.height = confetti.style.width;
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                
+                document.body.appendChild(confetti);
+
+                const angle = (Math.random() * 180) - 90;
+                const velocity = Math.random() * 150 + 80;
+                const endX = centerX + Math.cos(angle * Math.PI / 180) * velocity;
+                const endY = centerY - Math.random() * 150 - 50;
+
+                const animation = confetti.animate([
+                    { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
+                    { transform: `translate(${endX - centerX}px, ${endY - centerY}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 800 + 600,
+                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                });
+
+                animation.onfinish = () => confetti.remove();
+            }
+        }
+
         // ====== CLIPBOARD & INPUT ======
-        document.getElementById('pasteBtn').addEventListener('click', async () => {
+        async function pasteFromClipboard(inputId) {
             try {
                 const text = await navigator.clipboard.readText();
-                document.getElementById('urlInput').value = text;
+                document.getElementById(inputId).value = text;
                 showToast('success', 'Berhasil Paste', 'Link berhasil ditempel dari clipboard');
                 
-                // Auto-process if valid TikTok URL
-                if (isTikTokUrl(text)) {
+                // Auto-process if valid URL
+                if (inputId === 'tiktokInput' && isTikTokUrl(text)) {
                     setTimeout(() => processTikTokLink(), 500);
+                } else if (inputId === 'igInput' && isInstagramUrl(text)) {
+                    setTimeout(() => processInstagramLink(), 500);
                 }
             } catch (err) {
                 showToast('error', 'Gagal Paste', 'Izinkan akses clipboard atau paste manual');
             }
-        });
+        }
 
-        document.getElementById('clearBtn').addEventListener('click', () => {
-            document.getElementById('urlInput').value = '';
-            document.getElementById('errorState').classList.remove('active');
-            document.getElementById('urlInput').focus();
-        });
-
-        async function autoDetectClipboard() {
-            // Try to detect TikTok URL in clipboard on page load
-            try {
-                if (navigator.clipboard && navigator.clipboard.readText) {
-                    const text = await navigator.clipboard.readText();
-                    if (isTikTokUrl(text) && !document.getElementById('urlInput').value) {
-                        document.getElementById('urlInput').value = text;
-                        showToast('info', 'Link Terdeteksi', 'Link TikTok terdeteksi dari clipboard. Klik Download untuk memproses.');
-                    }
-                }
-            } catch (e) {
-                // Clipboard access denied, that's okay
-            }
+        function clearInput(inputId) {
+            const input = document.getElementById(inputId);
+            input.value = '';
+            const prefix = inputId === 'tiktokInput' ? 'tiktok' : 'ig';
+            document.getElementById(`${prefix}Error`).classList.remove('active');
+            input.focus();
         }
 
         function isTikTokUrl(url) {
             return /tiktok\.com|vm\.tiktok\.com|vt\.tiktok\.com/i.test(url);
         }
 
-        // ====== PROCESS LINK ======
-        document.getElementById('processBtn').addEventListener('click', processTikTokLink);
-        document.getElementById('urlInput').addEventListener('keypress', (e) => {
+        function isInstagramUrl(url) {
+            return /instagram\.com|instagr\.am/i.test(url);
+        }
+
+        function detectInstagramType(url) {
+            if (/\/reels?\//i.test(url)) return 'Reels';
+            if (/\/stories\//i.test(url)) return 'Story';
+            if (/\/tv\//i.test(url)) return 'IGTV';
+            if (/\/p\//i.test(url)) return 'Post';
+            return 'Instagram';
+        }
+
+        // ====== TIKTOK PROCESSING ======
+        document.getElementById('tiktokInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') processTikTokLink();
         });
 
         async function processTikTokLink() {
-            const url = document.getElementById('urlInput').value.trim();
-            const processBtn = document.getElementById('processBtn');
-            const loadingState = document.getElementById('loadingState');
-            const errorState = document.getElementById('errorState');
-            const progressBar = document.getElementById('progressBar');
-            const loadingText = document.getElementById('loadingText');
+            const url = document.getElementById('tiktokInput').value.trim();
+            const processBtn = document.getElementById('tiktokProcessBtn');
+            const loadingState = document.getElementById('tiktokLoading');
+            const errorState = document.getElementById('tiktokError');
+            const progressBar = document.getElementById('tiktokProgressBar');
+            const loadingText = document.getElementById('tiktokLoadingText');
 
-            // Validation
             if (!url) {
                 showToast('warning', 'Link Kosong', 'Masukkan link TikTok terlebih dahulu');
-                shakeInput();
+                shakeInput('tiktokInput');
                 return;
             }
 
             if (!isTikTokUrl(url)) {
                 showToast('error', 'Link Tidak Valid', 'Pastikan link yang dimasukkan adalah link TikTok');
-                shakeInput();
+                shakeInput('tiktokInput');
                 return;
             }
 
-            // Start processing
             processBtn.disabled = true;
             processBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Memproses...</span>';
             loadingState.classList.add('active');
             errorState.classList.remove('active');
             progressBar.style.width = '0%';
 
-            // Animate progress
             let progress = 0;
             const loadingMessages = [
                 'Menganalisis link TikTok...',
@@ -2267,63 +2492,484 @@
                 progress += Math.random() * 8 + 2;
                 if (progress > 90) progress = 90;
                 progressBar.style.width = `${progress}%`;
-                
                 const msgIndex = Math.min(Math.floor(progress / 20), loadingMessages.length - 1);
                 loadingText.textContent = loadingMessages[msgIndex];
             }, 200);
 
             try {
                 const data = await fetchTikTokData(url);
-
                 clearInterval(progressInterval);
                 progressBar.style.width = '100%';
                 loadingText.textContent = 'Selesai!';
 
                 if (!data) throw new Error('Gagal mengambil data video');
 
-                // Store data
-                currentVideoData = data;
+                tiktokData = data;
 
                 // Update result page
-                document.getElementById('resultThumb').src = data.thumbnail || '';
-                document.getElementById('resultTitle').textContent = data.title || 'Video TikTok';
-                document.getElementById('resultAuthor').textContent = data.author || '@unknown';
-                document.getElementById('resultLikes').textContent = formatNumber(data.likes || 0);
-                document.getElementById('resultDuration').textContent = formatDuration(data.duration || 0);
+                document.getElementById('ttResultThumb').src = data.thumbnail || '';
+                document.getElementById('ttResultTitle').textContent = data.title || 'Video TikTok';
+                document.getElementById('ttResultAuthor').textContent = data.author || '@unknown';
+                document.getElementById('ttResultLikes').textContent = formatNumber(data.likes || 0);
+                document.getElementById('ttResultDuration').textContent = formatDuration(data.duration || 0);
 
-                // Set download links
-                document.getElementById('dlHd').href = data.video_hd || '#';
-                document.getElementById('dlSd').href = data.video_sd || data.video_hd || '#';
-                document.getElementById('dlAudio').href = data.audio || '#';
-                document.getElementById('dlCover').href = data.thumbnail || '#';
+                document.getElementById('ttDlHd').href = data.video_hd || '#';
+                document.getElementById('ttDlSd').href = data.video_sd || data.video_hd || '#';
+                document.getElementById('ttDlAudio').href = data.audio || '#';
+                document.getElementById('ttDlCover').href = data.thumbnail || '#';
 
-                // Save to history
-                saveToHistory(data);
                 downloadCount++;
                 localStorage.setItem('totalDownloads', downloadCount);
                 updateDownloadCount();
 
-                // Transition to result
                 setTimeout(() => {
                     loadingState.classList.remove('active');
-                    showPage('result');
-                    showToast('success', 'Berhasil!', 'Video siap untuk didownload');
+                    showPage('tiktok-result');
+                    showToast('success', 'Berhasil!', 'Video TikTok siap untuk didownload');
                     createConfetti();
-                }, 500);
+                }, 400);
 
             } catch (error) {
                 clearInterval(progressInterval);
                 loadingState.classList.remove('active');
                 errorState.classList.add('active');
-                document.getElementById('errorText').textContent = error.message || 'Gagal memproses video. Coba lagi.';
+                document.getElementById('tiktokErrorText').textContent = error.message || 'Gagal memproses video. Coba lagi.';
                 showToast('error', 'Gagal', error.message || 'Terjadi kesalahan');
             } finally {
                 processBtn.disabled = false;
-                processBtn.innerHTML = '<i class="fas fa-download"></i> <span>Download Sekarang</span>';
+                processBtn.innerHTML = '<i class="fas fa-download"></i> <span>Download TikTok</span>';
             }
         }
 
-        // ====== API FETCHING ======
+        // ====== INSTAGRAM PROCESSING ======
+        document.getElementById('igInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') processInstagramLink();
+        });
+
+        async function processInstagramLink() {
+            const url = document.getElementById('igInput').value.trim();
+            const processBtn = document.getElementById('igProcessBtn');
+            const loadingState = document.getElementById('igLoading');
+            const errorState = document.getElementById('igError');
+            const progressBar = document.getElementById('igProgressBar');
+            const loadingText = document.getElementById('igLoadingText');
+
+            if (!url) {
+                showToast('warning', 'Link Kosong', 'Masukkan link Instagram terlebih dahulu');
+                shakeInput('igInput');
+                return;
+            }
+
+            if (!isInstagramUrl(url)) {
+                showToast('error', 'Link Tidak Valid', 'Pastikan link yang dimasukkan adalah link Instagram');
+                shakeInput('igInput');
+                return;
+            }
+
+            processBtn.disabled = true;
+            processBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Memproses...</span>';
+            loadingState.classList.add('active');
+            errorState.classList.remove('active');
+            progressBar.style.width = '0%';
+
+            let progress = 0;
+            const loadingMessages = [
+                'Menganalisis link Instagram...',
+                'Mendeteksi tipe konten...',
+                'Mengambil media...',
+                'Menyiapkan link download...',
+                'Hampir selesai...'
+            ];
+
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 8 + 2;
+                if (progress > 90) progress = 90;
+                progressBar.style.width = `${progress}%`;
+                const msgIndex = Math.min(Math.floor(progress / 20), loadingMessages.length - 1);
+                loadingText.textContent = loadingMessages[msgIndex];
+            }, 200);
+
+            try {
+                const data = await fetchInstagramData(url);
+                clearInterval(progressInterval);
+                progressBar.style.width = '100%';
+                loadingText.textContent = 'Selesai!';
+
+                if (!data) throw new Error('Gagal mengambil data Instagram');
+
+                instagramData = data;
+                renderInstagramResult(data);
+
+                downloadCount++;
+                localStorage.setItem('totalDownloads', downloadCount);
+                updateDownloadCount();
+
+                setTimeout(() => {
+                    loadingState.classList.remove('active');
+                    showPage('ig-result');
+                    showToast('success', 'Berhasil!', 'Konten Instagram siap untuk didownload');
+                    createConfetti();
+                }, 400);
+
+            } catch (error) {
+                clearInterval(progressInterval);
+                loadingState.classList.remove('active');
+                errorState.classList.add('active');
+                document.getElementById('igErrorText').textContent = error.message || 'Gagal memproses konten. Coba lagi.';
+                showToast('error', 'Gagal', error.message || 'Terjadi kesalahan');
+            } finally {
+                processBtn.disabled = false;
+                processBtn.innerHTML = '<i class="fas fa-download"></i> <span>Download Instagram</span>';
+            }
+        }
+
+        // ====== INSTAGRAM API ======
+        async function fetchInstagramData(url) {
+            const apis = [
+                {
+                    url: 'https://api.saveig.app/api/instagramSearch',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/json'
+                    },
+                    body: `q=${encodeURIComponent(url)}`,
+                    parse: (json) => parseSaveIg(json, url)
+                },
+                {
+                    url: 'https://v3.igdownloader.app/api',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/json'
+                    },
+                    body: `url=${encodeURIComponent(url)}`,
+                    parse: (json) => parseIgDownloaderV3(json, url)
+                },
+                {
+                    url: 'https://igdownloader.app/api',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/json'
+                    },
+                    body: `url=${encodeURIComponent(url)}`,
+                    parse: (json) => parseIgDownloaderApp(json, url)
+                }
+            ];
+
+            for (const api of apis) {
+                try {
+                    const res = await fetch(api.url, {
+                        method: api.method,
+                        headers: api.headers,
+                        body: api.body
+                    });
+                    const json = await res.json();
+                    const data = api.parse(json);
+                    if (data && (data.media?.length > 0 || data.video_hd || data.thumbnail)) {
+                        return data;
+                    }
+                } catch (e) {
+                    console.log('IG API failed:', api.url, e.message);
+                    continue;
+                }
+            }
+
+            throw new Error('Semua server sedang sibuk. Coba beberapa saat lagi.');
+        }
+
+        function parseSaveIg(json, originalUrl) {
+            try {
+                // Handle various response formats
+                let mediaArray = [];
+                
+                if (Array.isArray(json)) {
+                    mediaArray = json;
+                } else if (json.data && Array.isArray(json.data)) {
+                    mediaArray = json.data;
+                } else if (json.result && Array.isArray(json.result)) {
+                    mediaArray = json.result;
+                } else if (json.medias && Array.isArray(json.medias)) {
+                    mediaArray = json.medias;
+                }
+
+                if (mediaArray.length === 0) return null;
+
+                const type = detectInstagramType(originalUrl);
+                const media = mediaArray.map((item, idx) => {
+                    const url = item.url || item.src || item.download || item.link || '';
+                    const thumb = item.thumbnail || item.preview || item.display_src || url;
+                    const mediaType = (item.type || '').toLowerCase();
+                    
+                    return {
+                        url: url,
+                        thumbnail: thumb,
+                        type: mediaType.includes('video') ? 'video' : 'image',
+                        index: idx
+                    };
+                }).filter(m => m.url);
+
+                if (media.length === 0) return null;
+
+                const firstMedia = media[0];
+                const hasVideo = media.some(m => m.type === 'video');
+
+                return {
+                    media: media,
+                    thumbnail: firstMedia.thumbnail,
+                    video_hd: hasVideo ? (media.find(m => m.type === 'video')?.url || '') : '',
+                    video_sd: hasVideo ? (media.find(m => m.type === 'video')?.url || '') : '',
+                    type: type,
+                    author: json.author?.username || json.username || extractUsername(originalUrl),
+                    isCarousel: media.length > 1,
+                    mediaCount: media.length
+                };
+            } catch (e) {
+                console.error('Parse error:', e);
+                return null;
+            }
+        }
+
+        function parseIgDownloaderV3(json, originalUrl) {
+            return parseSaveIg(json, originalUrl);
+        }
+
+        function parseIgDownloaderApp(json, originalUrl) {
+            return parseSaveIg(json, originalUrl);
+        }
+
+        function extractUsername(url) {
+            const match = url.match(/instagram\.com\/([^\/]+)/);
+            return match ? '@' + match[1] : '@unknown';
+        }
+
+        // ====== RENDER INSTAGRAM RESULT ======
+        function renderInstagramResult(data) {
+            // Update preview
+            document.getElementById('igResultThumb').src = data.thumbnail || '';
+            document.getElementById('igResultTitle').textContent = `Instagram ${data.type}`;
+            document.getElementById('igResultAuthor').textContent = data.author || '@unknown';
+            document.getElementById('igResultType').textContent = data.type;
+            document.getElementById('igResultCount').textContent = `${data.mediaCount || 1} media`;
+
+            // Show/hide play overlay based on whether there's video
+            const playOverlay = document.querySelector('#igThumbContainer .play-overlay');
+            if (playOverlay) {
+                playOverlay.style.display = data.video_hd ? 'flex' : 'none';
+            }
+
+            // Render carousel if multiple media
+            const carouselContainer = document.getElementById('igCarouselContainer');
+            const carouselGrid = document.getElementById('igCarouselGrid');
+            
+            if (data.isCarousel && data.media.length > 1) {
+                carouselContainer.style.display = 'block';
+                carouselGrid.innerHTML = data.media.map((item, idx) => `
+                    <div class="carousel-item" onclick="previewMedia(${idx})">
+                        <img src="${item.thumbnail}" alt="Media ${idx + 1}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23333%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2260%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2230%22>🖼️</text></svg>'">
+                        <div class="carousel-badge">${item.type === 'video' ? '🎬' : '🖼️'} ${idx + 1}</div>
+                        <div class="carousel-dl">
+                            <i class="fas fa-download"></i> Download
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                carouselContainer.style.display = 'none';
+            }
+
+            // Render download options
+            const downloadGrid = document.getElementById('igDownloadGrid');
+            let downloadItems = [];
+
+            // Video download (if available)
+            if (data.video_hd) {
+                downloadItems.push(`
+                    <a href="#" class="download-item featured ig-featured" onclick="handleDownload(event, 'instagram', 'video_hd')">
+                        <div class="download-item-icon ig-video"><i class="fas fa-video"></i></div>
+                        <div class="download-item-info">
+                            <h5>Video HD</h5>
+                            <p>Kualitas Tinggi ${data.type}</p>
+                        </div>
+                    </a>
+                `);
+            }
+
+            // Image downloads (for each image in carousel or single post)
+            const images = data.media.filter(m => m.type === 'image');
+            if (images.length > 0) {
+                if (images.length === 1) {
+                    downloadItems.push(`
+                        <a href="#" class="download-item" onclick="handleDownload(event, 'instagram', 'image_0')">
+                            <div class="download-item-icon photo"><i class="fas fa-image"></i></div>
+                            <div class="download-item-info">
+                                <h5>Foto HD</h5>
+                                <p>Kualitas Asli</p>
+                            </div>
+                        </a>
+                    `);
+                } else {
+                    // Download all images
+                    downloadItems.push(`
+                        <a href="#" class="download-item featured ig-featured" onclick="handleDownload(event, 'instagram', 'all_images')">
+                            <div class="download-item-icon photo"><i class="fas fa-images"></i></div>
+                            <div class="download-item-info">
+                                <h5>Semua Foto (${images.length})</h5>
+                                <p>Download semua gambar</p>
+                            </div>
+                        </a>
+                    `);
+                    
+                    // Individual image downloads
+                    images.slice(0, 3).forEach((img, idx) => {
+                        downloadItems.push(`
+                            <a href="#" class="download-item" onclick="handleDownload(event, 'instagram', 'image_${idx}')">
+                                <div class="download-item-icon photo"><i class="fas fa-image"></i></div>
+                                <div class="download-item-info">
+                                    <h5>Foto ${idx + 1}</h5>
+                                    <p>Gambar ${idx + 1} dari ${images.length}</p>
+                                </div>
+                            </a>
+                        `);
+                    });
+                }
+            }
+
+            // Cover/thumbnail
+            if (data.thumbnail) {
+                downloadItems.push(`
+                    <a href="#" class="download-item" onclick="handleDownload(event, 'instagram', 'cover')">
+                        <div class="download-item-icon cover"><i class="fas fa-image"></i></div>
+                        <div class="download-item-info">
+                            <h5>Cover/Thumbnail</h5>
+                            <p>Gambar Preview</p>
+                        </div>
+                    </a>
+                `);
+            }
+
+            downloadGrid.innerHTML = downloadItems.join('');
+        }
+
+        // ====== DOWNLOAD HANDLER ======
+        function handleDownload(event, platform, type) {
+            event.preventDefault();
+            
+            let url = '';
+            let fileName = '';
+            let typeName = '';
+            let thumbUrl = '';
+
+            if (platform === 'tiktok') {
+                const data = tiktokData;
+                if (!data) return;
+                thumbUrl = data.thumbnail;
+
+                switch(type) {
+                    case 'hd':
+                        url = data.video_hd;
+                        fileName = `tiktok_video_hd_${Date.now()}.mp4`;
+                        typeName = 'Video HD (No Watermark)';
+                        break;
+                    case 'sd':
+                        url = data.video_sd;
+                        fileName = `tiktok_video_sd_${Date.now()}.mp4`;
+                        typeName = 'Video SD';
+                        break;
+                    case 'audio':
+                        url = data.audio;
+                        fileName = `tiktok_audio_${Date.now()}.mp3`;
+                        typeName = 'Audio MP3';
+                        break;
+                    case 'cover':
+                        url = data.thumbnail;
+                        fileName = `tiktok_cover_${Date.now()}.jpg`;
+                        typeName = 'Cover Image';
+                        break;
+                }
+            } else if (platform === 'instagram') {
+                const data = instagramData;
+                if (!data) return;
+                thumbUrl = data.thumbnail;
+
+                if (type === 'video_hd') {
+                    url = data.video_hd;
+                    fileName = `instagram_${data.type.toLowerCase()}_${Date.now()}.mp4`;
+                    typeName = `Video HD ${data.type}`;
+                } else if (type === 'cover') {
+                    url = data.thumbnail;
+                    fileName = `instagram_cover_${Date.now()}.jpg`;
+                    typeName = 'Cover Image';
+                } else if (type === 'all_images') {
+                    // Download all images one by one
+                    const images = data.media.filter(m => m.type === 'image');
+                    images.forEach((img, idx) => {
+                        setTimeout(() => {
+                            triggerDownload(img.url, `instagram_photo_${idx + 1}_${Date.now()}.jpg`);
+                        }, idx * 500);
+                    });
+                    showDownloadNotification(
+                        `instagram_all_photos_${Date.now()}.zip`,
+                        `${images.length} Foto`,
+                        thumbUrl,
+                        true
+                    );
+                    showToast('download', 'Download Dimulai', `Mengunduh ${images.length} foto...`);
+                    return;
+                } else if (type.startsWith('image_')) {
+                    const idx = parseInt(type.split('_')[1]);
+                    const img = data.media.filter(m => m.type === 'image')[idx];
+                    if (img) {
+                        url = img.url;
+                        thumbUrl = img.thumbnail;
+                        fileName = `instagram_photo_${idx + 1}_${Date.now()}.jpg`;
+                        typeName = `Foto ${idx + 1}`;
+                    }
+                }
+            }
+
+            if (!url || url === '#') {
+                showToast('error', 'Link Tidak Tersedia', 'Format download ini tidak tersedia');
+                return;
+            }
+
+            showDownloadNotification(fileName, typeName, thumbUrl, platform === 'instagram');
+            showToast('download', 'Download Dimulai', `Mengunduh ${typeName}...`);
+            triggerDownload(url, fileName);
+        }
+
+        function triggerDownload(url, filename) {
+            // Try fetch + blob approach for cross-origin
+            fetch(url, { mode: 'cors' })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network error');
+                    return response.blob();
+                })
+                .then(blob => {
+                    const blobUrl = URL.createObjectURL(blob);
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = blobUrl;
+                    downloadLink.download = filename;
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                    URL.revokeObjectURL(blobUrl);
+                })
+                .catch(err => {
+                    // Fallback: open in new tab
+                    console.log('Blob download failed, using fallback:', err);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                });
+        }
+
+        // ====== TIKTOK API ======
         async function fetchTikTokData(url) {
             const apis = [
                 {
@@ -2380,146 +3026,83 @@
             throw new Error('Semua server sedang sibuk. Coba beberapa saat lagi.');
         }
 
-        // ====== DOWNLOAD HANDLER ======
-        function handleDownload(event, type) {
-            event.preventDefault();
+        // ====== MEDIA PREVIEW ======
+        function playPreview(platform) {
+            const modal = document.getElementById('mediaModal');
+            const content = document.getElementById('modalContent');
             
-            const link = event.currentTarget;
-            const href = link.href;
-            
-            if (!href || href === '#') {
-                showToast('error', 'Link Tidak Tersedia', 'Format download ini tidak tersedia untuk video ini');
-                return;
+            // Clear previous content (keep close button)
+            const closeBtn = content.querySelector('.modal-close');
+            content.innerHTML = '';
+            content.appendChild(closeBtn);
+
+            if (platform === 'tiktok' && tiktokData) {
+                const video = document.createElement('video');
+                video.src = tiktokData.video_sd || tiktokData.video_hd;
+                video.controls = true;
+                video.autoplay = true;
+                content.appendChild(video);
+            } else if (platform === 'instagram' && instagramData) {
+                if (instagramData.video_hd) {
+                    const video = document.createElement('video');
+                    video.src = instagramData.video_hd;
+                    video.controls = true;
+                    video.autoplay = true;
+                    content.appendChild(video);
+                } else if (instagramData.thumbnail) {
+                    const img = document.createElement('img');
+                    img.src = instagramData.thumbnail;
+                    content.appendChild(img);
+                }
             }
 
-            const typeNames = {
-                hd: 'Video HD (No Watermark)',
-                sd: 'Video SD',
-                audio: 'Audio MP3',
-                cover: 'Cover Image'
-            };
-
-            const fileNames = {
-                hd: `tiktok_video_hd_${Date.now()}.mp4`,
-                sd: `tiktok_video_sd_${Date.now()}.mp4`,
-                audio: `tiktok_audio_${Date.now()}.mp3`,
-                cover: `tiktok_cover_${Date.now()}.jpg`
-            };
-
-            // Show download notification
-            showDownloadNotification(
-                fileNames[type],
-                typeNames[type],
-                currentVideoData?.thumbnail
-            );
-
-            // Show toast
-            showToast('download', 'Download Dimulai', `Mengunduh ${typeNames[type]}...`);
-
-            // Trigger actual download
-            triggerDownload(href, fileNames[type]);
-        }
-
-        function triggerDownload(url, filename) {
-            // Create invisible link for download
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-            
-            // For cross-origin downloads, try fetch + blob approach
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) throw new Error('Network error');
-                    return response.blob();
-                })
-                .then(blob => {
-                    const blobUrl = URL.createObjectURL(blob);
-                    const downloadLink = document.createElement('a');
-                    downloadLink.href = blobUrl;
-                    downloadLink.download = filename;
-                    document.body.appendChild(downloadLink);
-                    downloadLink.click();
-                    document.body.removeChild(downloadLink);
-                    URL.revokeObjectURL(blobUrl);
-                })
-                .catch(err => {
-                    // Fallback: open in new tab
-                    console.log('Blob download failed, using fallback:', err);
-                    window.open(url, '_blank');
-                });
-        }
-
-        // ====== VIDEO PREVIEW ======
-        function playPreview() {
-            if (!currentVideoData) return;
-            const modal = document.getElementById('videoModal');
-            const video = document.getElementById('modalVideo');
-            video.src = currentVideoData.video_sd || currentVideoData.video_hd;
             modal.classList.add('active');
         }
 
-        function closeVideoModal() {
-            const modal = document.getElementById('videoModal');
-            const video = document.getElementById('modalVideo');
-            video.pause();
-            video.src = '';
+        function previewMedia(index) {
+            if (!instagramData || !instagramData.media[index]) return;
+            const item = instagramData.media[index];
+            
+            const modal = document.getElementById('mediaModal');
+            const content = document.getElementById('modalContent');
+            
+            const closeBtn = content.querySelector('.modal-close');
+            content.innerHTML = '';
+            content.appendChild(closeBtn);
+
+            if (item.type === 'video') {
+                const video = document.createElement('video');
+                video.src = item.url;
+                video.controls = true;
+                video.autoplay = true;
+                content.appendChild(video);
+            } else {
+                const img = document.createElement('img');
+                img.src = item.url;
+                content.appendChild(img);
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeMediaModal() {
+            const modal = document.getElementById('mediaModal');
+            const content = document.getElementById('modalContent');
+            
+            // Stop any playing media
+            const video = content.querySelector('video');
+            if (video) { video.pause(); video.src = ''; }
+            
             modal.classList.remove('active');
         }
 
-        document.getElementById('videoModal').addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) closeVideoModal();
+        document.getElementById('mediaModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeMediaModal();
         });
 
-        // ====== HISTORY ======
-        function saveToHistory(data) {
-            const history = JSON.parse(localStorage.getItem('downloadHistory') || '[]');
-            history.unshift({
-                title: data.title,
-                author: data.author,
-                thumbnail: data.thumbnail,
-                date: new Date().toISOString(),
-                url: data.video_hd
-            });
-            localStorage.setItem('downloadHistory', JSON.stringify(history.slice(0, 20)));
-            renderHistory();
-        }
-
-        function renderHistory() {
-            const history = JSON.parse(localStorage.getItem('downloadHistory') || '[]');
-            const container = document.getElementById('historyList');
-
-            if (history.length === 0) {
-                container.innerHTML = `
-                    <div class="history-empty">
-                        <i class="fas fa-inbox"></i>
-                        <p>Belum ada riwayat download</p>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = history.slice(0, 5).map(item => `
-                <div class="history-item">
-                    <div class="history-thumb">
-                        <img src="${item.thumbnail || ''}" alt="" onerror="this.style.display='none'">
-                    </div>
-                    <div class="history-info">
-                        <h5>${item.title || 'Video TikTok'}</h5>
-                        <span>${item.author || ''} • ${timeAgo(item.date)}</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function updateDownloadCount() {
-            document.getElementById('totalDownloads').textContent = downloadCount.toLocaleString();
-        }
-
         // ====== UTILITIES ======
-        function shakeInput() {
-            const wrapper = document.querySelector('.input-wrapper');
+        function shakeInput(inputId) {
+            const wrapper = document.getElementById(inputId).closest('.input-wrapper');
             wrapper.style.animation = 'shakeError 0.5s ease';
             setTimeout(() => wrapper.style.animation = '', 500);
         }
@@ -2536,15 +3119,8 @@
             return `${m}:${s.toString().padStart(2, '0')}`;
         }
 
-        function timeAgo(dateStr) {
-            const now = new Date();
-            const date = new Date(dateStr);
-            const diff = Math.floor((now - date) / 1000);
-            
-            if (diff < 60) return 'Baru saja';
-            if (diff < 3600) return `${Math.floor(diff / 60)} menit lalu`;
-            if (diff < 86400) return `${Math.floor(diff / 3600)} jam lalu`;
-            return `${Math.floor(diff / 86400)} hari lalu`;
+        function updateDownloadCount() {
+            document.getElementById('totalDownloads').textContent = downloadCount.toLocaleString();
         }
 
         function toggleFaq(el) {
@@ -2555,26 +3131,40 @@
         }
 
         function rotatePlaceholder() {
-            const placeholders = [
+            const tiktokPlaceholders = [
                 'https://www.tiktok.com/@user/video/1234567890',
                 'https://vm.tiktok.com/ZMxxxxxxx/',
                 'Paste link TikTok di sini...',
                 'https://vt.tiktok.com/ZSxxxxxx/'
             ];
-            let idx = 0;
-            const input = document.getElementById('urlInput');
+            const igPlaceholders = [
+                'https://www.instagram.com/reel/ABC123/',
+                'https://www.instagram.com/p/XYZ789/',
+                'Paste link Instagram di sini...',
+                'https://www.instagram.com/stories/user/123/'
+            ];
+            
+            let ttIdx = 0, igIdx = 0;
+            const ttInput = document.getElementById('tiktokInput');
+            const igInput = document.getElementById('igInput');
             
             setInterval(() => {
-                if (!input.value && document.activeElement !== input) {
-                    input.placeholder = placeholders[idx];
-                    idx = (idx + 1) % placeholders.length;
+                if (!ttInput.value && document.activeElement !== ttInput) {
+                    ttInput.placeholder = tiktokPlaceholders[ttIdx];
+                    ttIdx = (ttIdx + 1) % tiktokPlaceholders.length;
+                }
+                if (!igInput.value && document.activeElement !== igInput) {
+                    igInput.placeholder = igPlaceholders[igIdx];
+                    igIdx = (igIdx + 1) % igPlaceholders.length;
                 }
             }, 3000);
         }
 
-        // ====== CONFETTI EFFECT ======
         function createConfetti() {
-            const colors = ['#ff0050', '#00f2ea', '#7c3aed', '#f59e0b', '#10b981'];
+            const colors = currentPlatform === 'tiktok' 
+                ? ['#ff0050', '#00f2ea', '#7c3aed', '#f59e0b', '#10b981']
+                : ['#833ab4', '#fd1d1d', '#fcb045', '#ff0050', '#7c3aed'];
+            
             for (let i = 0; i < 30; i++) {
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti-piece';
@@ -2600,24 +3190,17 @@
             }
         }
 
-        // ====== HISTORY BUTTON ======
-        document.getElementById('historyBtn').addEventListener('click', () => {
-            const section = document.getElementById('historySection');
-            section.scrollIntoView({ behavior: 'smooth' });
-        });
-
         // ====== KEYBOARD SHORTCUTS ======
         document.addEventListener('keydown', (e) => {
-            // Ctrl+V auto-focus input
             if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
-                const input = document.getElementById('urlInput');
+                const activeInput = currentPlatform === 'tiktok' ? 'tiktokInput' : 'igInput';
+                const input = document.getElementById(activeInput);
                 if (document.activeElement !== input) {
                     input.focus();
                 }
             }
-            // Escape to close modal
             if (e.key === 'Escape') {
-                closeVideoModal();
+                closeMediaModal();
             }
         });
     </script>
