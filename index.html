@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SocialSaver Pro - TikTok & Instagram Downloader</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -69,7 +69,8 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-
+        
+        /* Prevent zoom on mobile */
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
@@ -78,6 +79,17 @@
             overflow-x: hidden;
             min-height: 100vh;
             transition: background 0.5s ease, color 0.3s ease;
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        /* ====== TIKTOK ICON - CLEARLY VISIBLE ====== */
+        .tiktok-icon-svg {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.125em;
         }
 
         /* ====== ANIMATED BACKGROUND ====== */
@@ -138,13 +150,14 @@
         #preloader.hide { opacity: 0; visibility: hidden; }
 
         .preloader-logo {
+            font-size: 3rem;
             margin-bottom: 30px;
             animation: preloaderPulse 1.2s infinite;
         }
 
-        .preloader-logo svg {
-            width: 64px;
-            height: 64px;
+        .preloader-logo .tiktok-icon-svg {
+            width: 3rem;
+            height: 3rem;
         }
 
         .preloader-bar {
@@ -173,24 +186,6 @@
             100% { transform: translateX(350%); }
         }
 
-        /* ====== TIKTOK ICON SVG ====== */
-        .tiktok-icon-svg {
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .tiktok-icon-svg path.note1 {
-            fill: var(--tiktok-cyan);
-        }
-
-        .tiktok-icon-svg path.note2 {
-            fill: var(--tiktok);
-        }
-
-        .tiktok-icon-svg path.note-main {
-            fill: white;
-        }
-
         /* ====== NAVBAR ====== */
         .navbar {
             position: fixed;
@@ -211,7 +206,7 @@
         .navbar-brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             font-weight: 800;
             font-size: 1.3rem;
             text-decoration: none;
@@ -219,20 +214,15 @@
         }
 
         .navbar-brand .brand-icon {
-            width: 42px; height: 42px;
+            width: 36px; height: 36px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
+            font-size: 1rem;
             transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(255, 0, 80, 0.3);
-        }
-
-        .navbar-brand .brand-icon svg {
-            width: 26px;
-            height: 26px;
         }
 
         .navbar-actions {
@@ -409,11 +399,6 @@
             color: var(--tiktok);
         }
 
-        .tab-btn[data-platform="tiktok"] .tab-icon svg {
-            width: 18px;
-            height: 18px;
-        }
-
         .tab-btn[data-platform="instagram"] .tab-icon {
             background: linear-gradient(135deg, rgba(131, 58, 180, 0.1), rgba(253, 29, 29, 0.1), rgba(252, 176, 69, 0.1));
             color: var(--ig-pink);
@@ -496,11 +481,6 @@
             padding: 0 16px;
             color: var(--text-muted);
             font-size: 1.1rem;
-        }
-
-        .input-wrapper .input-icon svg {
-            width: 20px;
-            height: 20px;
         }
 
         .url-input {
@@ -1218,214 +1198,333 @@
 
         .toast-close:hover { color: var(--text-primary); }
 
-        /* ====== BROWSER-STYLE DOWNLOAD NOTIFICATION ====== */
-        .browser-download {
+        /* ====== DOWNLOAD NOTIFICATION ====== */
+        .download-notification {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 360px;
-            background: #202124;
-            border-radius: 8px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05);
+            bottom: 30px; right: 30px;
+            width: 380px;
+            background: rgba(20, 20, 30, 0.85);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+                0 0 80px rgba(255, 0, 80, 0.1);
             z-index: 9998;
             overflow: hidden;
-            animation: browserDlIn 0.3s ease-out;
-            font-family: 'Inter', sans-serif;
+            animation: downloadNotifIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        [data-theme="light"] .browser-download {
-            background: #ffffff;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0,0,0,0.08);
+        [data-theme="light"] .download-notification {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
         }
 
-        .browser-download.ig-dl {
-            border-left: 3px solid var(--ig-pink);
+        .download-notification.ig-download {
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+                0 0 80px rgba(253, 29, 29, 0.15);
         }
 
-        .browser-download.tt-dl {
-            border-left: 3px solid var(--tiktok);
+        .download-notification.hiding {
+            animation: downloadNotifOut 0.25s ease-in forwards;
         }
 
-        .browser-download.hiding {
-            animation: browserDlOut 0.25s ease-in forwards;
+        @keyframes downloadNotifIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.92);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
-        @keyframes browserDlIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes downloadNotifOut {
+            to {
+                opacity: 0;
+                transform: translateY(30px) scale(0.92);
+            }
         }
 
-        @keyframes browserDlOut {
-            to { opacity: 0; transform: translateY(20px) scale(0.95); }
+        .dn-bg-glow {
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 0, 80, 0.15), transparent 50%);
+            animation: glowRotate 8s linear infinite;
+            pointer-events: none;
         }
 
-        .bd-header {
-            padding: 12px 16px;
+        .download-notification.ig-download .dn-bg-glow {
+            background: radial-gradient(circle at center, rgba(253, 29, 29, 0.15), transparent 50%);
+        }
+
+        @keyframes glowRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .download-notif-header {
+            padding: 16px 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            gap: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
         }
 
-        [data-theme="light"] .bd-header {
-            border-bottom: 1px solid rgba(0,0,0,0.06);
-        }
-
-        .bd-icon {
-            width: 36px; height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .dn-progress-ring {
+            position: relative;
+            width: 52px; height: 52px;
             flex-shrink: 0;
-            font-size: 0.9rem;
-            color: white;
         }
 
-        .bd-icon.tt { background: linear-gradient(135deg, var(--tiktok), var(--tiktok-cyan)); }
-        .bd-icon.ig { background: linear-gradient(135deg, var(--ig-purple), var(--ig-pink), var(--ig-orange)); }
+        .dn-progress-ring svg {
+            transform: rotate(-90deg);
+            width: 52px; height: 52px;
+        }
 
-        .bd-info { flex: 1; min-width: 0; }
+        .dn-progress-ring .ring-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.08);
+            stroke-width: 4;
+        }
 
-        .bd-info h4 {
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: #e8eaed;
+        .dn-progress-ring .ring-fill {
+            fill: none;
+            stroke: url(#dnGradient);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-dasharray: 138.23;
+            stroke-dashoffset: 138.23;
+            transition: stroke-dashoffset 0.3s ease;
+        }
+
+        .download-notification.ig-download .ring-fill {
+            stroke: url(#dnGradientIg);
+        }
+
+        .dn-progress-ring .ring-percent {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .dn-info { flex: 1; min-width: 0; }
+
+        .dn-info h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dn-info h4 .dn-status-dot {
+            width: 6px; height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulseDot 1.5s infinite;
+        }
+
+        .download-notification.ig-download .dn-info h4 .dn-status-dot {
+            background: var(--ig-pink);
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .dn-info span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-bottom: 2px;
+            display: block;
         }
 
-        [data-theme="light"] .bd-info h4 { color: #202124; }
-
-        .bd-info span {
-            font-size: 0.72rem;
-            color: #9aa0a6;
-        }
-
-        [data-theme="light"] .bd-info span { color: #5f6368; }
-
-        .bd-close {
+        .dn-close {
             width: 28px; height: 28px;
-            border-radius: 50%;
+            border-radius: var(--radius-full);
             border: none;
-            background: transparent;
-            color: #9aa0a6;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            font-size: 0.8rem;
-            flex-shrink: 0;
-        }
-
-        .bd-close:hover {
-            background: rgba(255,255,255,0.08);
-            color: #e8eaed;
-        }
-
-        [data-theme="light"] .bd-close:hover {
-            background: rgba(0,0,0,0.05);
-            color: #202124;
-        }
-
-        .bd-body {
-            padding: 12px 16px;
-        }
-
-        .bd-progress-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-
-        .bd-progress-bar {
-            flex: 1;
-            height: 4px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        [data-theme="light"] .bd-progress-bar {
-            background: rgba(0,0,0,0.08);
-        }
-
-        .bd-progress-fill {
-            height: 100%;
-            border-radius: 4px;
-            width: 0%;
-            transition: width 0.2s ease;
-        }
-
-        .bd-progress-fill.tt { background: var(--tiktok); }
-        .bd-progress-fill.ig { background: linear-gradient(90deg, var(--ig-purple), var(--ig-pink)); }
-
-        .bd-percent {
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: #e8eaed;
-            font-family: 'JetBrains Mono', monospace;
-            min-width: 35px;
-            text-align: right;
-        }
-
-        [data-theme="light"] .bd-percent { color: #202124; }
-
-        .bd-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .bd-status {
-            font-size: 0.72rem;
-            color: #9aa0a6;
-        }
-
-        [data-theme="light"] .bd-status { color: #5f6368; }
-
-        .bd-actions {
-            display: flex;
-            gap: 4px;
-        }
-
-        .bd-btn {
-            width: 28px; height: 28px;
-            border-radius: 50%;
-            border: none;
-            background: transparent;
-            color: #9aa0a6;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: var(--transition);
             font-size: 0.75rem;
+            flex-shrink: 0;
         }
 
-        .bd-btn:hover {
-            background: rgba(255,255,255,0.08);
-            color: #e8eaed;
+        .dn-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            transform: rotate(90deg);
         }
 
-        [data-theme="light"] .bd-btn:hover {
-            background: rgba(0,0,0,0.05);
-            color: #202124;
+        .download-notif-body {
+            padding: 16px 20px;
+            position: relative;
+            z-index: 1;
         }
 
-        .bd-btn.cancel:hover { color: var(--danger); }
-
-        /* Complete state */
-        .browser-download.complete .bd-icon {
-            background: var(--success) !important;
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
         }
 
-        .browser-download.complete .bd-progress-fill {
-            background: var(--success) !important;
+        .file-info .file-thumb {
+            width: 44px; height: 44px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .file-info .file-thumb img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        .file-info .file-details { flex: 1; min-width: 0; }
+
+        .file-info .file-details h5 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+        }
+
+        .file-info .file-details span {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .download-progress {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .download-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            background-size: 200% 100%;
+            border-radius: 8px;
+            width: 0%;
+            transition: width 0.25s ease;
+            animation: gradientFlow 2s linear infinite;
+            position: relative;
+        }
+
+        .download-notification.ig-download .download-progress-bar {
+            background: linear-gradient(90deg, var(--ig-purple), var(--ig-pink), var(--ig-orange));
+            background-size: 200% 100%;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .download-progress-shimmer {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 1.5s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .download-progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .download-notif-footer {
+            padding: 12px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dn-btn {
+            padding: 7px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dn-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+        }
+
+        .download-notification.ig-download .dn-btn.primary {
+            background: linear-gradient(135deg, var(--ig-purple), var(--ig-pink));
+        }
+
+        .dn-btn.secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+        }
+
+        .dn-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+        .download-notification.complete .dn-progress-ring .ring-fill {
+            stroke: var(--success);
+        }
+
+        .download-notification.complete .download-progress-bar {
+            background: var(--success);
+            animation: none;
+        }
+
+        .download-notification.complete .dn-bg-glow {
+            background: radial-gradient(circle at center, rgba(16, 185, 129, 0.2), transparent 50%);
         }
 
         /* ====== VIDEO MODAL ====== */
@@ -1506,7 +1605,7 @@
             .video-details { text-align: center; }
             .video-meta { justify-content: center; }
             .download-grid { grid-template-columns: 1fr; }
-            .browser-download {
+            .download-notification {
                 width: calc(100% - 32px);
                 right: 16px; bottom: 16px;
             }
@@ -1516,6 +1615,7 @@
             .step-card { max-width: 100%; }
             .platform-tabs { max-width: 100%; }
             .tab-btn { padding: 10px 14px; font-size: 0.85rem; }
+            .tab-btn span.tab-label-long { display: none; }
         }
 
         @media (max-width: 480px) {
@@ -1559,14 +1659,29 @@
     </style>
 </head>
 <body>
+    <!-- SVG Gradients for Progress Rings -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <linearGradient id="dnGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff0050"/>
+                <stop offset="100%" stop-color="#00f2ea"/>
+            </linearGradient>
+            <linearGradient id="dnGradientIg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#833ab4"/>
+                <stop offset="50%" stop-color="#fd1d1d"/>
+                <stop offset="100%" stop-color="#fcb045"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
     <!-- Preloader -->
     <div id="preloader">
         <div class="preloader-logo">
-            <svg class="tiktok-icon-svg" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <path class="note1" d="M33.5 8.5c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.1 0-4-0.9-5.4-2.3 1.4 1.9 3.6 3.1 6.1 3.1 4.1 0 7.5-3.3 7.5-7.5V9.3c1.1-.5 2.3-.8 3.5-.8h.3V8.5h-1z"/>
-                <path class="note2" d="M32.5 9.5c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.1 0-4-0.9-5.4-2.3 1.4 1.9 3.6 3.1 6.1 3.1 4.1 0 7.5-3.3 7.5-7.5V10.3c1.1-.5 2.3-.8 3.5-.8h.3V9.5h-1z"/>
-                <path class="note-main" d="M33 9c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.6 0-4.9-1.3-6.2-3.3 1.3 1.5 3.2 2.5 5.4 2.5 4.1 0 7.5-3.3 7.5-7.5V9.8c1.1-.5 2.3-.8 3.5-.8H33z"/>
-                <path class="note-main" d="M22 14.5c-4.1 0-7.5 3.3-7.5 7.5 0 2.9 1.7 5.5 4.2 6.7-.5-1-.8-2.2-.8-3.4 0-4.1 3.3-7.5 7.5-7.5.4 0 .8 0 1.2.1v-4.3c-.4-.1-.8-.1-1.2-.1-.4 0-.8 0-1.2.1v4.3c-.7-.2-1.4-.3-2.2-.3z"/>
+            <!-- TikTok Icon SVG - Clearly Visible -->
+            <svg class="tiktok-icon-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M34.1451 8.03516C32.7991 6.69516 32.0451 4.88116 32.0451 3H25.0451V31.68C25.0451 34.56 22.7051 36.9 19.8251 36.9C18.3851 36.9 17.0851 36.3 16.1651 35.34C15.2451 34.38 14.6451 33.06 14.6451 31.62C14.6451 28.74 16.9851 26.4 19.8651 26.4C20.4051 26.4 20.9251 26.48 21.4251 26.62V19.5C20.7851 19.38 20.1251 19.32 19.4451 19.32C13.2051 19.32 8.14512 24.38 8.14512 30.62C8.14512 33.78 9.44512 36.6 11.5251 38.64C13.6051 40.68 16.4451 41.94 19.5851 41.94C25.8251 41.94 30.8851 36.88 30.8851 30.64V15.66C32.7851 17.04 35.1251 17.82 37.6451 17.82V10.74C36.2651 10.74 34.9651 10.44 33.7651 9.9C33.2651 9.66 32.7851 9.36 32.3451 9.02L34.1451 8.03516Z" fill="#25F4EE"/>
+                <path d="M35.1451 9.03516C33.7991 7.69516 33.0451 5.88116 33.0451 4H26.0451V32.68C26.0451 35.56 23.7051 37.9 20.8251 37.9C19.3851 37.9 18.0851 37.3 17.1651 36.34C16.2451 35.38 15.6451 34.06 15.6451 32.62C15.6451 29.74 17.9851 27.4 20.8651 27.4C21.4051 27.4 21.9251 27.48 22.4251 27.62V20.5C21.7851 20.38 21.1251 20.32 20.4451 20.32C14.2051 20.32 9.14512 25.38 9.14512 31.62C9.14512 34.78 10.4451 37.6 12.5251 39.64C14.6051 41.68 17.4451 42.94 20.5851 42.94C26.8251 42.94 31.8851 37.88 31.8851 31.64V16.66C33.7851 18.04 36.1251 18.82 38.6451 18.82V11.74C37.2651 11.74 35.9651 11.44 34.7651 10.9C34.2651 10.66 33.7851 10.36 33.3451 10.02L35.1451 9.03516Z" fill="#FE2C55"/>
+                <path d="M34.6451 8.53516C33.2991 7.19516 32.5451 5.38116 32.5451 3.5H25.5451V32.18C25.5451 35.06 23.2051 37.4 20.3251 37.4C18.8851 37.4 17.5851 36.8 16.6651 35.84C15.7451 34.88 15.1451 33.56 15.1451 32.12C15.1451 29.24 17.4851 26.9 20.3651 26.9C20.9051 26.9 21.4251 26.98 21.9251 27.12V20C21.2851 19.88 20.6251 19.82 19.9451 19.82C13.7051 19.82 8.64512 24.88 8.64512 31.12C8.64512 34.28 9.94512 37.1 12.0251 39.14C14.1051 41.18 16.9451 42.44 20.0851 42.44C26.3251 42.44 31.3851 37.38 31.3851 31.14V16.16C33.2851 17.54 35.6251 18.32 38.1451 18.32V11.24C36.7651 11.24 35.4651 10.94 34.2651 10.4C33.7651 10.16 33.2851 9.86 32.8451 9.52L34.6451 8.53516Z" fill="white"/>
             </svg>
         </div>
         <div class="preloader-bar"></div>
@@ -1583,13 +1698,7 @@
     <!-- Navbar -->
     <nav class="navbar">
         <a href="#" class="navbar-brand" onclick="showPage('home'); return false;">
-            <div class="brand-icon">
-                <svg class="tiktok-icon-svg" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                    <path class="note1" d="M33.5 8.5c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.1 0-4-0.9-5.4-2.3 1.4 1.9 3.6 3.1 6.1 3.1 4.1 0 7.5-3.3 7.5-7.5V9.3c1.1-.5 2.3-.8 3.5-.8h.3V8.5h-1z"/>
-                    <path class="note2" d="M32.5 9.5c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.1 0-4-0.9-5.4-2.3 1.4 1.9 3.6 3.1 6.1 3.1 4.1 0 7.5-3.3 7.5-7.5V10.3c1.1-.5 2.3-.8 3.5-.8h.3V9.5h-1z"/>
-                    <path class="note-main" d="M33 9c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.6 0-4.9-1.3-6.2-3.3 1.3 1.5 3.2 2.5 5.4 2.5 4.1 0 7.5-3.3 7.5-7.5V9.8c1.1-.5 2.3-.8 3.5-.8H33z"/>
-                </svg>
-            </div>
+            <div class="brand-icon"><i class="fas fa-download"></i></div>
             <span>Social<span style="color: var(--primary)">Saver</span></span>
         </a>
         <div class="navbar-actions">
@@ -1629,10 +1738,11 @@
                 <div class="platform-tabs">
                     <button class="tab-btn active" data-platform="tiktok" onclick="switchPlatform('tiktok')">
                         <div class="tab-icon">
-                            <svg class="tiktok-icon-svg" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                                <path class="note1" d="M33.5 8.5c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.1 0-4-0.9-5.4-2.3 1.4 1.9 3.6 3.1 6.1 3.1 4.1 0 7.5-3.3 7.5-7.5V9.3c1.1-.5 2.3-.8 3.5-.8h.3V8.5h-1z"/>
-                                <path class="note2" d="M32.5 9.5c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.1 0-4-0.9-5.4-2.3 1.4 1.9 3.6 3.1 6.1 3.1 4.1 0 7.5-3.3 7.5-7.5V10.3c1.1-.5 2.3-.8 3.5-.8h.3V9.5h-1z"/>
-                                <path class="note-main" d="M33 9c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.6 0-4.9-1.3-6.2-3.3 1.3 1.5 3.2 2.5 5.4 2.5 4.1 0 7.5-3.3 7.5-7.5V9.8c1.1-.5 2.3-.8 3.5-.8H33z"/>
+                            <!-- TikTok Icon SVG - Clearly Visible -->
+                            <svg class="tiktok-icon-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M34.1451 8.03516C32.7991 6.69516 32.0451 4.88116 32.0451 4H25.0451V32.68C25.0451 35.56 22.7051 37.9 19.8251 37.9C18.3851 37.9 17.0851 37.3 16.1651 36.34C15.2451 35.38 14.6451 34.06 14.6451 32.62C14.6451 29.74 16.9851 27.4 19.8651 27.4C20.4051 27.4 20.9251 27.48 21.4251 27.62V20.5C20.7851 20.38 20.1251 20.32 19.4451 20.32C13.2051 20.32 8.14512 25.38 8.14512 31.62C8.14512 34.78 9.44512 37.6 11.5251 39.64C13.6051 41.68 16.4451 42.94 19.5851 42.94C25.8251 42.94 30.8851 37.88 30.8851 31.64V16.66C32.7851 18.04 35.1251 18.82 37.6451 18.82V11.74C36.2651 11.74 34.9651 11.44 33.7651 10.9C33.2651 10.66 32.7851 10.36 32.3451 10.02L34.1451 8.03516Z" fill="#25F4EE"/>
+                                <path d="M35.1451 9.03516C33.7991 7.69516 33.0451 5.88116 33.0451 4H26.0451V32.68C26.0451 35.56 23.7051 37.9 20.8251 37.9C19.3851 37.9 18.0851 37.3 17.1651 36.34C16.2451 35.38 15.6451 34.06 15.6451 32.62C15.6451 29.74 17.9851 27.4 20.8651 27.4C21.4051 27.4 21.9251 27.48 22.4251 27.62V20.5C21.7851 20.38 21.1251 20.32 20.4451 20.32C14.2051 20.32 9.14512 25.38 9.14512 31.62C9.14512 34.78 10.4451 37.6 12.5251 39.64C14.6051 41.68 17.4451 42.94 20.5851 42.94C26.8251 42.94 31.8851 37.88 31.8851 31.64V16.66C33.7851 18.04 36.1251 18.82 38.6451 18.82V11.74C37.2651 11.74 35.9651 11.44 34.7651 10.9C34.2651 10.66 33.7851 10.36 33.3451 10.02L35.1451 9.03516Z" fill="#FE2C55"/>
+                                <path d="M34.6451 8.53516C33.2991 7.19516 32.5451 5.38116 32.5451 3.5H25.5451V32.18C25.5451 35.06 23.2051 37.4 20.3251 37.4C18.8851 37.4 17.5851 36.8 16.6651 35.84C15.7451 34.88 15.1451 33.56 15.1451 32.12C15.1451 29.24 17.4851 26.9 20.3651 26.9C20.9051 26.9 21.4251 26.98 21.9251 27.12V20C21.2851 19.88 20.6251 19.82 19.9451 19.82C13.7051 19.82 8.64512 24.88 8.64512 31.12C8.64512 34.28 9.94512 37.1 12.0251 39.14C14.1051 41.18 16.9451 42.44 20.0851 42.44C26.3251 42.44 31.3851 37.38 31.3851 31.14V16.16C33.2851 17.54 35.6251 18.32 38.1451 18.32V11.24C36.7651 11.24 35.4651 10.94 34.2651 10.4C33.7651 10.16 33.2851 9.86 32.8451 9.52L34.6451 8.53516Z" fill="currentColor"/>
                             </svg>
                         </div>
                         <span>TikTok</span>
@@ -1649,10 +1759,11 @@
                 <div class="input-card">
                     <div class="input-wrapper">
                         <div class="input-icon">
-                            <svg class="tiktok-icon-svg" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-                                <path class="note1" d="M33.5 8.5c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.1 0-4-0.9-5.4-2.3 1.4 1.9 3.6 3.1 6.1 3.1 4.1 0 7.5-3.3 7.5-7.5V9.3c1.1-.5 2.3-.8 3.5-.8h.3V8.5h-1z"/>
-                                <path class="note2" d="M32.5 9.5c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.1 0-4-0.9-5.4-2.3 1.4 1.9 3.6 3.1 6.1 3.1 4.1 0 7.5-3.3 7.5-7.5V10.3c1.1-.5 2.3-.8 3.5-.8h.3V9.5h-1z"/>
-                                <path class="note-main" d="M33 9c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.6 0-4.9-1.3-6.2-3.3 1.3 1.5 3.2 2.5 5.4 2.5 4.1 0 7.5-3.3 7.5-7.5V9.8c1.1-.5 2.3-.8 3.5-.8H33z"/>
+                            <!-- TikTok Icon SVG - Clearly Visible -->
+                            <svg class="tiktok-icon-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:1.2em;height:1.2em;">
+                                <path d="M34.1451 8.03516C32.7991 6.69516 32.0451 4.88116 32.0451 4H25.0451V32.68C25.0451 35.56 22.7051 37.9 19.8251 37.9C18.3851 37.9 17.0851 37.3 16.1651 36.34C15.2451 35.38 14.6451 34.06 14.6451 32.62C14.6451 29.74 16.9851 27.4 19.8651 27.4C20.4051 27.4 20.9251 27.48 21.4251 27.62V20.5C20.7851 20.38 20.1251 20.32 19.4451 20.32C13.2051 20.32 8.14512 25.38 8.14512 31.62C8.14512 34.78 9.44512 37.6 11.5251 39.64C13.6051 41.68 16.4451 42.94 19.5851 42.94C25.8251 42.94 30.8851 37.88 30.8851 31.64V16.66C32.7851 18.04 35.1251 18.82 37.6451 18.82V11.74C36.2651 11.74 34.9651 11.44 33.7651 10.9C33.2651 10.66 32.7851 10.36 32.3451 10.02L34.1451 8.03516Z" fill="#25F4EE"/>
+                                <path d="M35.1451 9.03516C33.7991 7.69516 33.0451 5.88116 33.0451 4H26.0451V32.68C26.0451 35.56 23.7051 37.9 20.8251 37.9C19.3851 37.9 18.0851 37.3 17.1651 36.34C16.2451 35.38 15.6451 34.06 15.6451 32.62C15.6451 29.74 17.9851 27.4 20.8651 27.4C21.4051 27.4 21.9251 27.48 22.4251 27.62V20.5C21.7851 20.38 21.1251 20.32 20.4451 20.32C14.2051 20.32 9.14512 25.38 9.14512 31.62C9.14512 34.78 10.4451 37.6 12.5251 39.64C14.6051 41.68 17.4451 42.94 20.5851 42.94C26.8251 42.94 31.8851 37.88 31.8851 31.64V16.66C33.7851 18.04 36.1251 18.82 38.6451 18.82V11.74C37.2651 11.74 35.9651 11.44 34.7651 10.9C34.2651 10.66 33.7851 10.36 33.3451 10.02L35.1451 9.03516Z" fill="#FE2C55"/>
+                                <path d="M34.6451 8.53516C33.2991 7.19516 32.5451 5.38116 32.5451 3.5H25.5451V32.18C25.5451 35.06 23.2051 37.4 20.3251 37.4C18.8851 37.4 17.5851 36.8 16.6651 35.84C15.7451 34.88 15.1451 33.56 15.1451 32.12C15.1451 29.24 17.4851 26.9 20.3651 26.9C20.9051 26.9 21.4251 26.98 21.9251 27.12V20C21.2851 19.88 20.6251 19.82 19.9451 19.82C13.7051 19.82 8.64512 24.88 8.64512 31.12C8.64512 34.28 9.94512 37.1 12.0251 39.14C14.1051 41.18 16.9451 42.44 20.0851 42.44C26.3251 42.44 31.3851 37.38 31.3851 31.14V16.16C33.2851 17.54 35.6251 18.32 38.1451 18.32V11.24C36.7651 11.24 35.4651 10.94 34.2651 10.4C33.7651 10.16 33.2851 9.86 32.8451 9.52L34.6451 8.53516Z" fill="currentColor"/>
                             </svg>
                         </div>
                         <input type="text" class="url-input" id="tiktokInput" placeholder="Paste link TikTok di sini..." autocomplete="off">
@@ -2039,6 +2150,14 @@
         let downloadCount = parseInt(localStorage.getItem('totalDownloads') || '0');
         let isDarkTheme = localStorage.getItem('theme') !== 'light';
 
+        // ====== CORS PROXY CONFIGURATION ======
+        // Multiple CORS proxies as fallback
+        const CORS_PROXIES = [
+            'https://corsproxy.io/?',
+            'https://api.allorigins.win/raw?url=',
+            'https://cors-anywhere.herokuapp.com/',
+        ];
+
         // ====== INITIALIZATION ======
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => document.getElementById('preloader').classList.add('hide'), 900);
@@ -2138,99 +2257,202 @@
             setTimeout(() => toast.remove(), 250);
         }
 
-        // ====== BROWSER-STYLE DOWNLOAD NOTIFICATION ======
-        function showBrowserDownload(fileName, platform, thumbUrl = '') {
-            // Remove existing
-            const existing = document.querySelector('.browser-download');
+        // ====== FETCH WITH CORS PROXY FALLBACK ======
+        async function fetchWithProxy(url, options = {}) {
+            // Try direct fetch first
+            try {
+                const response = await fetch(url, {
+                    ...options,
+                    mode: 'cors'
+                });
+                if (response.ok) return response;
+            } catch (e) {
+                console.log('Direct fetch failed, trying proxies...');
+            }
+
+            // Try each CORS proxy
+            for (const proxy of CORS_PROXIES) {
+                try {
+                    const proxyUrl = proxy + encodeURIComponent(url);
+                    const response = await fetch(proxyUrl, {
+                        ...options,
+                        mode: 'cors'
+                    });
+                    if (response.ok) return response;
+                } catch (e) {
+                    console.log(`Proxy ${proxy} failed:`, e.message);
+                    continue;
+                }
+            }
+
+            throw new Error('Semua koneksi gagal. Periksa internet Anda.');
+        }
+
+        // ====== DOWNLOAD NOTIFICATION ======
+        function showDownloadNotification(fileName, fileType, thumbUrl, isInstagram = false) {
+            const existing = document.querySelector('.download-notification');
             if (existing) {
                 if (existing.dataset.interval) clearInterval(parseInt(existing.dataset.interval));
                 existing.remove();
             }
 
-            const isIg = platform === 'instagram';
             const notif = document.createElement('div');
-            notif.className = `browser-download ${isIg ? 'ig-dl' : 'tt-dl'}`;
+            notif.className = `download-notification${isInstagram ? ' ig-download' : ''}`;
             notif.innerHTML = `
-                <div class="bd-header">
-                    <div class="bd-icon ${isIg ? 'ig' : 'tt'}">
-                        ${isIg ? '<i class="fab fa-instagram"></i>' : '<svg class="tiktok-icon-svg" viewBox="0 0 48 48" width="20" height="20"><path class="note1" d="M33.5 8.5c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.1 0-4-0.9-5.4-2.3 1.4 1.9 3.6 3.1 6.1 3.1 4.1 0 7.5-3.3 7.5-7.5V9.3c1.1-.5 2.3-.8 3.5-.8h.3V8.5h-1z"/><path class="note2" d="M32.5 9.5c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.1 0-4-0.9-5.4-2.3 1.4 1.9 3.6 3.1 6.1 3.1 4.1 0 7.5-3.3 7.5-7.5V10.3c1.1-.5 2.3-.8 3.5-.8h.3V9.5h-1z"/><path class="note-main" d="M33 9c-1.2 0-2.4.3-3.5.8v18.2c0 4.1-3.3 7.5-7.5 7.5-2.6 0-4.9-1.3-6.2-3.3 1.3 1.5 3.2 2.5 5.4 2.5 4.1 0 7.5-3.3 7.5-7.5V9.8c1.1-.5 2.3-.8 3.5-.8H33z"/></svg>'}
+                <div class="dn-bg-glow"></div>
+                <div class="download-notif-header">
+                    <div class="dn-progress-ring">
+                        <svg width="52" height="52">
+                            <circle class="ring-bg" cx="26" cy="26" r="22"/>
+                            <circle class="ring-fill" cx="26" cy="26" r="22"/>
+                        </svg>
+                        <span class="ring-percent">0%</span>
                     </div>
-                    <div class="bd-info">
-                        <h4>${fileName}</h4>
-                        <span class="bd-subtitle">Mengunduh...</span>
+                    <div class="dn-info">
+                        <h4><span class="dn-status-dot"></span> <span class="dn-title">Downloading...</span></h4>
+                        <span class="dn-subtitle">Moh tunggu sebentar</span>
                     </div>
-                    <button class="bd-close" onclick="cancelBrowserDl(this)"><i class="fas fa-xmark"></i></button>
+                    <button class="dn-close" onclick="cancelDownload(this)"><i class="fas fa-xmark"></i></button>
                 </div>
-                <div class="bd-body">
-                    <div class="bd-progress-container">
-                        <div class="bd-progress-bar">
-                            <div class="bd-progress-fill ${isIg ? 'ig' : 'tt'}"></div>
+                <div class="download-notif-body">
+                    <div class="file-info">
+                        <div class="file-thumb">
+                            <img src="${thumbUrl || ''}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23333%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2260%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2240%22>🎬</text></svg>'">
                         </div>
-                        <span class="bd-percent">0%</span>
-                    </div>
-                    <div class="bd-footer">
-                        <span class="bd-status">Mengunduh...</span>
-                        <div class="bd-actions">
-                            <button class="bd-btn cancel" onclick="cancelBrowserDl(this)" title="Batal"><i class="fas fa-xmark"></i></button>
+                        <div class="file-details">
+                            <h5>${fileName}</h5>
+                            <span>${fileType}</span>
                         </div>
                     </div>
+                    <div class="download-progress">
+                        <div class="download-progress-bar"></div>
+                        <div class="download-progress-shimmer"></div>
+                    </div>
+                    <div class="download-progress-text">
+                        <span class="dn-status">Mengunduh...</span>
+                        <span class="dn-speed">0 MB/s</span>
+                    </div>
+                </div>
+                <div class="download-notif-footer">
+                    <button class="dn-btn secondary" onclick="cancelDownload(this)"><i class="fas fa-xmark"></i> Batal</button>
+                    <button class="dn-btn primary" onclick="openFileLocation(this)"><i class="fas fa-folder-open"></i> Buka File</button>
                 </div>
             `;
 
             document.body.appendChild(notif);
-            simulateBrowserProgress(notif);
+            simulateDownloadProgress(notif);
         }
 
-        function simulateBrowserProgress(notif) {
+        function simulateDownloadProgress(notif) {
             let progress = 0;
-            const fill = notif.querySelector('.bd-progress-fill');
-            const percentText = notif.querySelector('.bd-percent');
-            const statusText = notif.querySelector('.bd-status');
-            const subtitle = notif.querySelector('.bd-subtitle');
+            const progressBar = notif.querySelector('.download-progress-bar');
+            const percentText = notif.querySelector('.ring-percent');
+            const statusText = notif.querySelector('.dn-status');
+            const speedText = notif.querySelector('.dn-speed');
+            const titleEl = notif.querySelector('.dn-title');
+            const subtitleEl = notif.querySelector('.dn-subtitle');
+            const ringFill = notif.querySelector('.ring-fill');
+            const circumference = 2 * Math.PI * 22;
 
             const interval = setInterval(() => {
-                const increment = Math.random() * 15 + 8;
+                const increment = Math.random() * 18 + 8;
                 progress += increment;
                 
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(interval);
                     
-                    fill.style.width = '100%';
+                    progressBar.style.width = '100%';
                     percentText.textContent = '100%';
-                    statusText.textContent = 'Download selesai';
-                    subtitle.textContent = 'File tersimpan';
+                    ringFill.style.strokeDashoffset = '0';
+                    statusText.textContent = 'Selesai!';
+                    speedText.textContent = '✓';
+                    titleEl.textContent = 'Download Selesai!';
+                    subtitleEl.textContent = 'File berhasil disimpan';
+                    
+                    const dot = notif.querySelector('.dn-status-dot');
+                    if (dot) dot.style.background = 'var(--success)';
                     
                     notif.classList.add('complete');
-                    showToast('success', 'Download Selesai!', 'File berhasil disimpan');
-                    
+                    showToast('success', 'Download Selesai!', 'File berhasil disimpan ke perangkatmu');
+                    createMiniConfetti();
+
                     setTimeout(() => {
                         if (notif.parentElement) {
                             notif.classList.add('hiding');
                             setTimeout(() => notif.remove(), 250);
                         }
-                    }, 3000);
+                    }, 2500);
                 } else {
-                    fill.style.width = `${progress}%`;
+                    progressBar.style.width = `${progress}%`;
                     percentText.textContent = `${Math.round(progress)}%`;
                     
-                    if (progress < 30) statusText.textContent = 'Mengunduh...';
-                    else if (progress < 70) statusText.textContent = 'Memproses...';
-                    else statusText.textContent = 'Hampir selesai...';
+                    const offset = circumference - (progress / 100) * circumference;
+                    ringFill.style.strokeDashoffset = offset;
+                    
+                    const speed = (Math.random() * 3 + 1.5).toFixed(1);
+                    speedText.textContent = `${speed} MB/s`;
+                    
+                    if (progress < 25) statusText.textContent = 'Mengunduh...';
+                    else if (progress < 60) statusText.textContent = 'Memproses file...';
+                    else if (progress < 90) statusText.textContent = 'Hampir selesai...';
+                    else statusText.textContent = 'Menyimpan file...';
                 }
-            }, 150);
+            }, 180);
 
             notif.dataset.interval = interval;
         }
 
-        function cancelBrowserDl(btn) {
-            const notif = btn.closest('.browser-download');
+        function cancelDownload(btn) {
+            const notif = btn.closest('.download-notification');
             if (!notif) return;
             const interval = parseInt(notif.dataset.interval);
             if (interval) clearInterval(interval);
             notif.classList.add('hiding');
             setTimeout(() => notif.remove(), 250);
             showToast('warning', 'Download Dibatalkan', 'Download telah dibatalkan');
+        }
+
+        function openFileLocation(btn) {
+            showToast('info', 'Info', 'File tersimpan di folder Downloads perangkatmu');
+        }
+
+        function createMiniConfetti() {
+            const colors = ['#ff0050', '#00f2ea', '#7c3aed', '#f59e0b', '#10b981'];
+            const notif = document.querySelector('.download-notification');
+            if (!notif) return;
+            
+            const rect = notif.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top;
+
+            for (let i = 0; i < 15; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = centerX + 'px';
+                confetti.style.top = centerY + 'px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 6 + 4 + 'px';
+                confetti.style.height = confetti.style.width;
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                
+                document.body.appendChild(confetti);
+
+                const angle = (Math.random() * 180) - 90;
+                const velocity = Math.random() * 150 + 80;
+                const endX = centerX + Math.cos(angle * Math.PI / 180) * velocity;
+                const endY = centerY - Math.random() * 150 - 50;
+
+                const animation = confetti.animate([
+                    { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
+                    { transform: `translate(${endX - centerX}px, ${endY - centerY}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 800 + 600,
+                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                });
+
+                animation.onfinish = () => confetti.remove();
+            }
         }
 
         // ====== CLIPBOARD & INPUT ======
@@ -2307,20 +2529,20 @@
 
             let progress = 0;
             const loadingMessages = [
-                'Menghubungi server TikTok...',
-                'Menganalisis video...',
-                'Mengekstrak link download...',
-                'Menyiapkan hasil...',
+                'Menganalisis link TikTok...',
+                'Mengambil data video...',
+                'Memproses tanpa watermark...',
+                'Menyiapkan link download...',
                 'Hampir selesai...'
             ];
 
             const progressInterval = setInterval(() => {
-                progress += Math.random() * 10 + 5;
+                progress += Math.random() * 8 + 2;
                 if (progress > 90) progress = 90;
                 progressBar.style.width = `${progress}%`;
                 const msgIndex = Math.min(Math.floor(progress / 20), loadingMessages.length - 1);
                 loadingText.textContent = loadingMessages[msgIndex];
-            }, 150);
+            }, 200);
 
             try {
                 const data = await fetchTikTokData(url);
@@ -2332,7 +2554,6 @@
 
                 tiktokData = data;
 
-                // Update result page
                 document.getElementById('ttResultThumb').src = data.thumbnail || '';
                 document.getElementById('ttResultTitle').textContent = data.title || 'Video TikTok';
                 document.getElementById('ttResultAuthor').textContent = data.author || '@unknown';
@@ -2353,15 +2574,6 @@
                     showPage('tiktok-result');
                     showToast('success', 'Berhasil!', 'Video TikTok siap untuk didownload');
                     createConfetti();
-                    
-                    // AUTO-DOWNLOAD HD immediately
-                    setTimeout(() => {
-                        if (data.video_hd) {
-                            const fileName = `tiktok_${data.author || 'video'}_${Date.now()}.mp4`;
-                            showBrowserDownload(fileName, 'tiktok', data.thumbnail);
-                            triggerDownload(data.video_hd, fileName);
-                        }
-                    }, 800);
                 }, 400);
 
             } catch (error) {
@@ -2409,20 +2621,20 @@
 
             let progress = 0;
             const loadingMessages = [
-                'Menghubungi server Instagram...',
+                'Menganalisis link Instagram...',
                 'Mendeteksi tipe konten...',
-                'Mengekstrak media...',
+                'Mengambil media...',
                 'Menyiapkan link download...',
                 'Hampir selesai...'
             ];
 
             const progressInterval = setInterval(() => {
-                progress += Math.random() * 10 + 5;
+                progress += Math.random() * 8 + 2;
                 if (progress > 90) progress = 90;
                 progressBar.style.width = `${progress}%`;
                 const msgIndex = Math.min(Math.floor(progress / 20), loadingMessages.length - 1);
                 loadingText.textContent = loadingMessages[msgIndex];
-            }, 150);
+            }, 200);
 
             try {
                 const data = await fetchInstagramData(url);
@@ -2444,21 +2656,6 @@
                     showPage('ig-result');
                     showToast('success', 'Berhasil!', 'Konten Instagram siap untuk didownload');
                     createConfetti();
-                    
-                    // AUTO-DOWNLOAD immediately
-                    setTimeout(() => {
-                        if (data.video_hd) {
-                            const fileName = `instagram_${data.type.toLowerCase()}_${Date.now()}.mp4`;
-                            showBrowserDownload(fileName, 'instagram', data.thumbnail);
-                            triggerDownload(data.video_hd, fileName);
-                        } else if (data.media && data.media.length > 0) {
-                            const firstMedia = data.media[0];
-                            const ext = firstMedia.type === 'video' ? '.mp4' : '.jpg';
-                            const fileName = `instagram_media_${Date.now()}${ext}`;
-                            showBrowserDownload(fileName, 'instagram', data.thumbnail);
-                            triggerDownload(firstMedia.url, fileName);
-                        }
-                    }, 800);
                 }, 400);
 
             } catch (error) {
@@ -2473,28 +2670,20 @@
             }
         }
 
-        // ====== TIKTOK API - REAL WORKING ENDPOINT ======
-        // Using tikwm.com API - Free, no key required, CORS enabled, fast response
-        // Documentation: https://www.tikwm.com/api/
+        // ====== TIKTOK API - Multiple Fallbacks ======
         async function fetchTikTokData(url) {
             const apis = [
+                // Primary: tikwm.com API (most reliable)
                 {
-                    // Primary: tikwm.com POST API (most reliable)
-                    url: 'https://www.tikwm.com/api/',
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Accept': 'application/json'
-                    },
-                    body: `url=${encodeURIComponent(url)}&hd=1`,
+                    url: `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`,
                     parse: (json) => {
                         if (json.code !== 0) return null;
                         const d = json.data;
                         return {
-                            video_hd: d.hdplay || d.play || '',
-                            video_sd: d.play || d.wmplay || '',
-                            audio: d.music || '',
-                            thumbnail: d.cover || d.origin_cover || '',
+                            video_hd: d.hdplay || d.play,
+                            video_sd: d.play || d.wmplay,
+                            audio: d.music,
+                            thumbnail: d.cover || d.origin_cover,
                             title: d.title || 'Video TikTok',
                             author: d.author?.unique_id || d.author?.nickname || '@unknown',
                             likes: d.digg_count || 0,
@@ -2502,19 +2691,17 @@
                         };
                     }
                 },
+                // Alternative: tikwm without www
                 {
-                    // Fallback: tikwm.com GET API
                     url: `https://tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`,
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' },
                     parse: (json) => {
                         if (json.code !== 0) return null;
                         const d = json.data;
                         return {
-                            video_hd: d.hdplay || d.play || '',
-                            video_sd: d.play || d.wmplay || '',
-                            audio: d.music || '',
-                            thumbnail: d.cover || d.origin_cover || '',
+                            video_hd: d.hdplay || d.play,
+                            video_sd: d.play || d.wmplay,
+                            audio: d.music,
+                            thumbnail: d.cover || d.origin_cover,
                             title: d.title || 'Video TikTok',
                             author: d.author?.unique_id || d.author?.nickname || '@unknown',
                             likes: d.digg_count || 0,
@@ -2522,27 +2709,20 @@
                         };
                     }
                 },
+                // Alternative: ttdownv4 workers
                 {
-                    // Fallback 2: tikwm.com with different domain
-                    url: 'https://tikwm.com/api/',
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Accept': 'application/json'
-                    },
-                    body: `url=${encodeURIComponent(url)}&hd=1`,
+                    url: `https://tdownv4.sl-bjs.workers.dev/?down=${encodeURIComponent(url)}`,
                     parse: (json) => {
-                        if (json.code !== 0) return null;
-                        const d = json.data;
+                        if (!json.download_url) return null;
                         return {
-                            video_hd: d.hdplay || d.play || '',
-                            video_sd: d.play || d.wmplay || '',
-                            audio: d.music || '',
-                            thumbnail: d.cover || d.origin_cover || '',
-                            title: d.title || 'Video TikTok',
-                            author: d.author?.unique_id || d.author?.nickname || '@unknown',
-                            likes: d.digg_count || 0,
-                            duration: d.duration || 0
+                            video_hd: json.download_url,
+                            video_sd: json.download_url,
+                            audio: json.author?.audio_url || '',
+                            thumbnail: '',
+                            title: json.title || 'Video TikTok',
+                            author: json.author?.username || '@unknown',
+                            likes: json.author?.like_count || 0,
+                            duration: json.author?.duration || 0
                         };
                     }
                 }
@@ -2550,21 +2730,13 @@
 
             for (const api of apis) {
                 try {
-                    const options = {
-                        method: api.method,
-                        headers: api.headers
-                    };
-                    if (api.method === 'POST') {
-                        options.body = api.body;
-                    }
-                    
-                    const res = await fetch(api.url, options);
+                    const res = await fetchWithProxy(api.url, {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' }
+                    });
                     const json = await res.json();
                     const data = api.parse(json);
-                    if (data && (data.video_hd || data.video_sd)) {
-                        console.log('TikTok API success:', api.url);
-                        return data;
-                    }
+                    if (data && data.video_hd) return data;
                 } catch (e) {
                     console.log('TikTok API failed:', api.url, e.message);
                     continue;
@@ -2574,23 +2746,22 @@
             throw new Error('Semua server TikTok sedang sibuk. Coba beberapa saat lagi.');
         }
 
-        // ====== INSTAGRAM API - MULTIPLE FALLBACK ENDPOINTS ======
+        // ====== INSTAGRAM API - Multiple Fallbacks ======
         async function fetchInstagramData(url) {
             const apis = [
+                // Primary: saveig.app API
                 {
-                    // Primary: saveig.app API
                     url: 'https://api.saveig.app/api/instagramSearch',
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'Accept': 'application/json',
-                        'Origin': 'https://saveig.app'
+                        'Accept': 'application/json'
                     },
                     body: `q=${encodeURIComponent(url)}`,
                     parse: (json) => parseSaveIg(json, url)
                 },
+                // Alternative: v3 igdownloader
                 {
-                    // Fallback 1: igdownloader v3
                     url: 'https://v3.igdownloader.app/api',
                     method: 'POST',
                     headers: {
@@ -2600,8 +2771,8 @@
                     body: `url=${encodeURIComponent(url)}`,
                     parse: (json) => parseSaveIg(json, url)
                 },
+                // Alternative: igdownloader.app
                 {
-                    // Fallback 2: igdownloader.app
                     url: 'https://igdownloader.app/api',
                     method: 'POST',
                     headers: {
@@ -2611,38 +2782,43 @@
                     body: `url=${encodeURIComponent(url)}`,
                     parse: (json) => parseSaveIg(json, url)
                 },
+                // Alternative: snapsave API
                 {
-                    // Fallback 3: gramhir alternative
-                    url: 'https://gramhir.com/api/search',
+                    url: 'https://snapsave.app/action.php?lang=id',
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
-                        'Accept': 'application/json'
+                        'Accept': 'text/html'
                     },
                     body: `url=${encodeURIComponent(url)}`,
-                    parse: (json) => parseSaveIg(json, url)
+                    parse: (html) => parseSnapSave(html, url)
                 }
             ];
 
             for (const api of apis) {
                 try {
-                    const res = await fetch(api.url, {
+                    const res = await fetchWithProxy(api.url, {
                         method: api.method,
                         headers: api.headers,
                         body: api.body
                     });
                     
-                    if (!res.ok) continue;
+                    let data;
+                    const contentType = res.headers.get('content-type') || '';
                     
-                    const json = await res.json();
-                    const data = api.parse(json);
+                    if (contentType.includes('application/json')) {
+                        const json = await res.json();
+                        data = api.parse(json);
+                    } else {
+                        const text = await res.text();
+                        data = api.parse(text);
+                    }
                     
                     if (data && (data.media?.length > 0 || data.video_hd || data.thumbnail)) {
-                        console.log('Instagram API success:', api.url);
                         return data;
                     }
                 } catch (e) {
-                    console.log('Instagram API failed:', api.url, e.message);
+                    console.log('IG API failed:', api.url, e.message);
                     continue;
                 }
             }
@@ -2662,43 +2838,14 @@
                     mediaArray = json.result;
                 } else if (json.medias && Array.isArray(json.medias)) {
                     mediaArray = json.medias;
-                } else if (json.images && Array.isArray(json.images)) {
-                    mediaArray = json.images.map(img => ({
-                        url: typeof img === 'string' ? img : (img.url || img.src || img.download || ''),
-                        type: 'image',
-                        thumbnail: typeof img === 'string' ? img : (img.thumbnail || img.url || img.src || '')
-                    }));
-                } else if (json.videos && Array.isArray(json.videos)) {
-                    mediaArray = json.videos.map(vid => ({
-                        url: typeof vid === 'string' ? vid : (vid.url || vid.src || vid.download || ''),
-                        type: 'video',
-                        thumbnail: typeof vid === 'string' ? vid : (vid.thumbnail || vid.url || vid.src || '')
-                    }));
-                }
-
-                if (mediaArray.length === 0) {
-                    // Try to extract from other formats
-                    if (json.url || json.video_url || json.download_url) {
-                        mediaArray = [{
-                            url: json.video_url || json.download_url || json.url,
-                            type: 'video',
-                            thumbnail: json.thumbnail || json.thumb || json.cover || ''
-                        }];
-                    } else if (json.media_url) {
-                        mediaArray = [{
-                            url: json.media_url,
-                            type: json.media_type === 'IMAGE' ? 'image' : 'video',
-                            thumbnail: json.thumbnail || ''
-                        }];
-                    }
                 }
 
                 if (mediaArray.length === 0) return null;
 
                 const type = detectInstagramType(originalUrl);
                 const media = mediaArray.map((item, idx) => {
-                    const url = item.url || item.src || item.download || item.link || item.video_url || item.image_url || '';
-                    const thumb = item.thumbnail || item.preview || item.display_src || item.thumb || url;
+                    const url = item.url || item.src || item.download || item.link || '';
+                    const thumb = item.thumbnail || item.preview || item.display_src || url;
                     const mediaType = (item.type || '').toLowerCase();
                     
                     return {
@@ -2716,7 +2863,7 @@
 
                 return {
                     media: media,
-                    thumbnail: firstMedia.thumbnail || firstMedia.url,
+                    thumbnail: firstMedia.thumbnail,
                     video_hd: hasVideo ? (media.find(m => m.type === 'video')?.url || '') : '',
                     video_sd: hasVideo ? (media.find(m => m.type === 'video')?.url || '') : '',
                     type: type,
@@ -2726,6 +2873,53 @@
                 };
             } catch (e) {
                 console.error('Parse error:', e);
+                return null;
+            }
+        }
+
+        function parseSnapSave(html, originalUrl) {
+            try {
+                const media = [];
+                
+                // Extract video URLs
+                const videoMatches = html.match(/https?:\/\/[^"'\s]+\.mp4[^"'\s]*/gi) || [];
+                videoMatches.forEach(url => {
+                    media.push({
+                        url: url,
+                        thumbnail: '',
+                        type: 'video'
+                    });
+                });
+                
+                // Extract image URLs
+                const imgMatches = html.match(/https?:\/\/[^"'\s]+\.(jpg|jpeg|png|webp)[^"'\s]*/gi) || [];
+                imgMatches.forEach(url => {
+                    if (!url.includes('logo') && !url.includes('icon')) {
+                        media.push({
+                            url: url,
+                            thumbnail: url,
+                            type: 'image'
+                        });
+                    }
+                });
+
+                if (media.length === 0) return null;
+
+                const type = detectInstagramType(originalUrl);
+                const hasVideo = media.some(m => m.type === 'video');
+
+                return {
+                    media: media,
+                    thumbnail: media[0].thumbnail || media[0].url,
+                    video_hd: hasVideo ? (media.find(m => m.type === 'video')?.url || '') : '',
+                    video_sd: hasVideo ? (media.find(m => m.type === 'video')?.url || '') : '',
+                    type: type,
+                    author: extractUsername(originalUrl),
+                    isCarousel: media.length > 1,
+                    mediaCount: media.length
+                };
+            } catch (e) {
+                console.error('SnapSave parse error:', e);
                 return null;
             }
         }
@@ -2889,7 +3083,12 @@
                             triggerDownload(img.url, `instagram_photo_${idx + 1}_${Date.now()}.jpg`);
                         }, idx * 500);
                     });
-                    showBrowserDownload(`instagram_all_photos_${Date.now()}.zip`, 'instagram', thumbUrl);
+                    showDownloadNotification(
+                        `instagram_all_photos_${Date.now()}.zip`,
+                        `${images.length} Foto`,
+                        thumbUrl,
+                        true
+                    );
                     showToast('download', 'Download Dimulai', `Mengunduh ${images.length} foto...`);
                     return;
                 } else if (type.startsWith('image_')) {
@@ -2909,14 +3108,14 @@
                 return;
             }
 
-            showBrowserDownload(fileName, platform, thumbUrl);
+            showDownloadNotification(fileName, typeName, thumbUrl, platform === 'instagram');
             showToast('download', 'Download Dimulai', `Mengunduh ${typeName}...`);
             triggerDownload(url, fileName);
         }
 
         function triggerDownload(url, filename) {
-            // Try fetch + blob approach
-            fetch(url, { mode: 'cors' })
+            // Try fetch + blob approach for cross-origin
+            fetchWithProxy(url, { mode: 'cors' })
                 .then(response => {
                     if (!response.ok) throw new Error('Network error');
                     return response.blob();
@@ -3119,6 +3318,15 @@
             if (e.key === 'Escape') {
                 closeMediaModal();
             }
+        });
+
+        // ====== PREVENT ZOOM ON MOBILE ======
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('dblclick', function(e) {
+            e.preventDefault();
         });
     </script>
 </body>
